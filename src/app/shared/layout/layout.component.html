@@ -1,0 +1,89 @@
+<!-- Toolbar -->
+<div class="app-toolbar"
+     [class.collapsed]="sidebarCollapsed && !isMobile"
+     [ngClass]="{
+    'with-sidebar': sidebarVisible && !sidebarCollapsed && !isMobile,
+    'collapsed-sidebar': sidebarVisible && sidebarCollapsed && !isMobile
+  }"
+>
+  <button class="menu-button responsive-only" (click)="toggleCollapse()">
+    <i class="pi pi-bars"></i>
+  </button>
+  <div class="title-box">
+    <h1 class="title">
+      <!--<img src="../../../assets/images/ali-removebg-preview.png" alt="logo" />-->
+    </h1>
+  </div>
+  <span class="toolbar-spacer"></span>
+  <!-- User Menubar -->
+  <p-menu #userMenu [model]="userItems" [popup]="true"></p-menu>
+  <div class="user-profile" (click)="userMenu.toggle($event)">
+    <img src="https://i.pravatar.cc/150?img=59" alt="User" class="user-avatar" />
+    <span class="user-name">Emiliano Rodriguez</span>
+    <i class="pi pi-angle-down user-icon"></i>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<div
+  class="sidebar-desktop"
+  [class.visible]="sidebarVisible"
+  [class.collapsed]="sidebarCollapsed"
+>
+  <a
+    pButton
+    [icon]="sidebarCollapsed ? 'pi pi-bars' : 'pi pi-times'"
+    class="menu-button-inside"
+    (click)="toggleCollapse()"
+  ></a>
+  <ul class="sidenav-list">
+    <li  routerLink="/chat-box" routerLinkActive="active" class="clickable" (click)="onMenuOptionClick()">
+      <div class="module-title">
+        <i class="pi pi-box"></i>
+        <span *ngIf="!sidebarCollapsed">Asistente</span>
+      </div>
+    </li>
+    <li routerLink="/dashboard" routerLinkActive="active" class="clickable" (click)="onMenuOptionClick()">
+      <div class="module-title">
+        <i class="pi pi-objects-column"></i>
+        <span *ngIf="!sidebarCollapsed">Dashboard</span>
+      </div>
+    </li>
+
+    <li class="group-title" *ngIf="!sidebarCollapsed">Administración</li>
+    <li routerLink="/users" routerLinkActive="active" class="clickable" (click)="onMenuOptionClick()">
+      <div
+        class="module-title">
+        <i class="pi pi-users"></i>
+        <span *ngIf="!sidebarCollapsed">Usuarios</span>
+      </div>
+    </li>
+    <li routerLink="/documents" routerLinkActive="active" class="clickable" (click)="onMenuOptionClick()">
+      <div class="module-title">
+        <i class="pi pi-briefcase"></i>
+        <span *ngIf="!sidebarCollapsed">Documentos</span>
+      </div>
+    </li>
+
+    <li routerLink="/indicators" routerLinkActive="active" class="clickable" (click)="onMenuOptionClick()">
+      <div class="module-title">
+        <i class="pi pi-chart-bar"></i>
+        <span *ngIf="!sidebarCollapsed">Indicadores</span>
+      </div>
+    </li>
+  </ul>
+
+</div>
+
+<!-- Contenido -->
+<div
+  class="main-content"
+  [class.collapsed]="sidebarCollapsed && !isMobile"
+  [ngClass]="{
+    'with-sidebar': sidebarVisible && !sidebarCollapsed && !isMobile,
+    'collapsed-sidebar': sidebarVisible && sidebarCollapsed && !isMobile
+  }"
+>
+ <router-outlet></router-outlet>
+</div>
+

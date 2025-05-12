@@ -1,0 +1,44 @@
+<div class="chat-container"
+     [class.sidebar-collapsed]="isSidebarCollapsed"
+>
+  <div class="chat-sidebar" [class.collapsed]="isSidebarCollapsed">
+    <button class="collapse-toggle-btn" (click)="toggleSidebar()">
+      <i class="pi" [ngClass]="{ 'pi-angle-left': !isSidebarCollapsed, 'pi-angle-right': isSidebarCollapsed }"></i>
+    </button>
+    <button class="new-chat-btn" (click)="newChat()">
+      <i class="pi pi-plus"></i> <span class="label">Nuevo chat</span>
+    </button>
+    <div class="chat-history-title">Hoy</div>
+    <div
+      *ngFor="let chat of chatHistory"
+      (click)="loadChat(chat)"
+      [class.active]="chat.id === currentChat.id"
+      class="history-item"
+      (dblclick)="editTitle(chat)"
+    >
+      <i class="pi pi-comments"></i>
+      <span class="label" *ngIf="!chat.editing">{{ chat.title }}</span>
+      <input
+        *ngIf="chat.editing"
+        [(ngModel)]="chat.title"
+        (blur)="chat.editing = false"
+        (keydown.enter)="chat.editing = false"
+      />
+    </div>
+  </div>
+
+  <div class="chat-window">
+    <div class="chat-messages">
+      <div *ngFor="let message of currentChat.messages" class="chat-message" [ngClass]="[message.role]">
+        <strong *ngIf="message.role === 'user'">Tú: </strong>
+        <strong *ngIf="message.role === 'bot'">Asistente: </strong>
+        <span>{{ message.content }}</span>
+      </div>
+    </div>
+    <div class="chat-input">
+      <input type="text" [(ngModel)]="userInput" (keydown.enter)="sendMessage()" placeholder="Escribe tu mensaje..." />
+      <button class="btn-send" pButton icon="pi pi-send" (click)="sendMessage()"></button>
+    </div>
+  </div>
+</div>
+

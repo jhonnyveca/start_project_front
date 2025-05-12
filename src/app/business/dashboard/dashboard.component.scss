@@ -1,0 +1,249 @@
+.chat-container {
+  display: flex;
+  height: 100%;
+  transition: all 0.3s ease;
+
+  &.sidebar-collapsed {
+    .chat-sidebar {
+      width: 60px;
+
+      .label,
+      .chat-history-title {
+        display: none;
+      }
+      .new-chat-btn {
+        justify-content: center;
+      }
+    }
+    .chat-window {
+      width: calc(100% - 60px);
+    }
+
+  }
+  .chat-sidebar {
+    width: 250px;
+    background-color: #d0d3d4;
+    padding: 1rem;
+    overflow-y: auto;
+    border-radius: 10px;
+    position: relative;
+    transition: width 0.3s ease;
+
+    &.collapsed {
+      width: 60px;
+
+      .label {
+        display: none !important;
+      }
+
+      .chat-history-title {
+        display: none;
+      }
+
+      .new-chat-btn {
+        justify-content: center;
+        padding: 0.4rem;
+      }
+    }
+
+    .collapse-toggle-btn {
+      top: 10px;
+      right: 10px;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+      font-size: 1.2rem;
+      align-items: center;
+      display: flex;
+    }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      border-radius: 10px;
+      padding: 5px;
+
+      &:hover {
+        background-color: #ddd;
+        border-radius: 4px;
+      }
+
+      i {
+        font-size: 1.2rem;
+      }
+
+      input {
+        flex-grow: 1;
+      }
+    }
+
+    .chat-history-title {
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .new-chat-btn {
+      width: 100%;
+      padding: 0.7rem;
+      background-color: #5b5b5b;
+      border: none;
+      color: white;
+      font-weight: bold;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+      margin-top: 2rem;
+
+      .label {
+        display: inline;
+      }
+    }
+
+    .history-item.active {
+      background-color: #e0e0e0;
+      border-radius: 10px;
+      padding: 5px;
+    }
+  }
+
+  .chat-window {
+    flex-grow: 2;
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    height: 100%;
+    width: 100%;
+
+    .cards-container {
+      display: grid;
+      gap: 1rem;
+      padding: 0;
+      grid-template-columns: repeat(2, 1fr);
+
+      .card-dashboard {
+        display: block;
+        margin-top: 0 !important;
+        background: white;
+        border: 1px solid lightgray;
+        border-radius: 8px;
+        padding: 0;
+
+        h4 {
+          margin-top: 1rem;
+          margin-bottom: 0.5rem;
+          margin-left: 1rem;
+        }
+
+        p-chart {
+          display: block;
+          width: calc(100% - 60px);
+          margin-left: 1rem;
+        }
+      }
+    }
+
+    .chat-input {
+      display: flex;
+      padding: 1rem;
+      border-top: 1px solid #ccc;
+
+      input {
+        flex-grow: 1;
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 0.5rem;
+      }
+
+      button {
+        border-radius: 4px;
+      }
+    }
+  }
+}
+.btn-send{
+  background-color: #78be21;
+  border:  1px solid #78be21 !important;
+  color: white;
+}
+
+.btn-send:not(:disabled):hover {
+  background-color: #78c71b !important;
+}
+
+
+@media (max-width: 768px) {
+  .chat-container {
+    position: relative;
+    flex-direction: row;
+
+    .chat-sidebar {
+      position: fixed;
+      top: 75px;
+      left: 1px;
+      height: calc(100vh - 60px)!important;
+      width: 250px;
+      background-color: #d0d3d4;
+      z-index: 7;
+      transition: width 0.2s ease, transform 0.3s ease;
+    }
+
+    &:not(.sidebar-collapsed) .chat-sidebar {
+      transform: translateX(0); // visible
+    }
+
+    &::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      //background-color: rgba(0, 0, 0, 0.5);
+      z-index: 5;
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    &.sidebar-collapsed::after {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .chat-window {
+      margin-left: 60px!important;
+      .cards-container {
+        display: grid;
+        gap: 1rem;
+        padding: 0;
+        grid-template-columns: 1fr;
+
+        .card-dashboard {
+          padding: 0;
+          display: grid;
+          margin-top: 0 !important;
+          background: white;
+          border: 1px solid lightgray;
+          border-radius: 8px;
+
+          h4 {
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            margin-left: 0.5rem;
+          }
+
+          p-chart {
+            display: flex;
+            width: calc(100% - 60px) !important;
+            margin-left: 0!important;
+          }
+        }
+      }
+    }
+  }
+}

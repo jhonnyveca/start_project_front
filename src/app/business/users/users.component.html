@@ -1,0 +1,89 @@
+<div class="card">
+  <div class="form-grid">
+    <div class="form-field">
+      <label>
+        Administracion de usuarios
+      </label>
+    </div>
+    <div class="form-field">
+      <p-toolbar class="toolbar-spacing">
+        <ng-template #start>
+        </ng-template>
+        <ng-template #end>
+          <p-button label="Registrar usuario" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
+        </ng-template>
+      </p-toolbar>
+    </div>
+  </div>
+
+
+    <p-table
+      #dt
+      [value]="users"
+      [rows]="7"
+      [rowsPerPageOptions]="[7, 10, 25]"
+      [columns]="cols"
+      [paginator]="true"
+      [globalFilterFields]="['id', 'name', 'email', 'role', 'appUser']"
+      [tableStyle]="{ 'min-width': '75rem' }"
+      showGridlines
+      [(selection)]="selectedUsers"
+      [rowHover]="true"
+      dataKey="id"
+      currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} usuarios"
+      [showCurrentPageReport]="true"
+    >
+      <ng-template  #caption >
+        <div class="search">
+          <h4 class="m-0">Tabla de usuarios </h4>
+          <p-iconfield>
+            <p-inputicon styleClass="pi pi-search" />
+            <input pInputText type="text"
+                   (input)="onGlobalFilter($event)"
+                   placeholder="Buscar..." />
+          </p-iconfield>
+        </div>
+      </ng-template>
+      <ng-template #header>
+        <tr>
+          <!--<th style="width: 3rem">
+            <p-tableHeaderCheckbox />
+          </th>-->
+          <th>Codigo</th>
+          <th pSortableColumn="name" style="min-width:25rem">
+            Nombre
+            <p-sortIcon field="name" />
+          </th>
+          <th style="min-width: 10rem">Correo</th>
+          <th pSortableColumn="role" style="min-width: 10rem">
+            Tipo de usuario
+            <p-sortIcon field="role" />
+          </th>
+          <th pSortableColumn="appUser" style="min-width:15rem">
+            Aplicacion
+            <p-sortIcon field="appUser" />
+          </th>
+          <th style="min-width: 12rem">Acciones</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-user>
+        <tr>
+          <!--<td style="width: 3rem">
+            <p-tableCheckbox [value]="user" />
+          </td>-->
+          <td style="min-width: 12rem">{{ user.id }}</td>
+          <td style="min-width: 16rem">{{ user.name }}</td>
+          <td>{{ user.email}}</td>
+          <td>{{ user.role }}</td>
+          <td>{{ user.appUser}}</td>
+          <td>
+            <p-button icon="pi pi-pencil" class="btn-edit" [rounded]="true" [outlined]="true" (click)="editProduct(user)" />
+            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProduct(user)" />
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+  </div>
+
+

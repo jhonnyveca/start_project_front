@@ -1,0 +1,52 @@
+<div class="user-form card">
+  <h2>Registrar usuario</h2>
+
+  <form #userForm="ngForm" (ngSubmit)="createUser()" class="form-grid">
+    <!-- Campo: Nombre -->
+    <div class="form-field">
+      <label for="name">Nombre</label>
+      <input id="name" type="text" pInputText [(ngModel)]="user.name" name="name" required />
+    </div>
+
+    <div class="form-field"></div>
+
+    <!-- Campo: Correo -->
+    <div class="form-field">
+      <label for="email">Correo electrónico</label>
+      <input id="email" type="email" pInputText [(ngModel)]="user.email" name="email" required />
+    </div>
+
+    <!-- Campo: Rol -->
+    <div class="form-field">
+      <label >Tipo de acceso</label>
+      <p-multiselect
+        [options]="roles"
+        name="role"
+        [(ngModel)]="user.role"
+        placeholder="Seleccione una opcion"
+        optionLabel="name"
+        display="chip"
+        styleClass="w-full md:w-80"></p-multiselect>
+    </div>
+
+
+    <!-- Campo: App Usuario -->
+    <div class="form-field">
+      <label >Rol operativo</label>
+      <p-multiselect
+        [options]="apps"
+        name="appUser"
+        [(ngModel)]="user.appUser"
+        placeholder="Seleccione una opcion"
+        optionLabel="name"
+        display="chip"
+        styleClass="w-full md:w-80"></p-multiselect>
+    </div>
+
+    <!-- Botones -->
+    <div class="form-actions">
+      <button pButton type="submit" label="Registrar" icon="pi pi-check" [disabled]="userForm.invalid"></button>
+      <button pButton type="button" label="Cancelar" icon="pi pi-times" class="p-button-secondary" (click)="cancel()"></button>
+    </div>
+  </form>
+</div>

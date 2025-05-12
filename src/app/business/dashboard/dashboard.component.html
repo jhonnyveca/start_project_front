@@ -1,0 +1,53 @@
+<div class="chat-container"
+     [class.sidebar-collapsed]="isSidebarCollapsed"
+>
+  <div class="chat-sidebar" [class.collapsed]="isSidebarCollapsed">
+    <button class="collapse-toggle-btn" (click)="toggleSidebar()">
+      <i class="pi" [ngClass]="{ 'pi-angle-left': !isSidebarCollapsed, 'pi-angle-right': isSidebarCollapsed }"></i>
+    </button>
+    <button class="new-chat-btn" (click)="newChat()">
+      <i class="pi pi-plus"></i> <span class="label">Nuevo dashboard</span>
+    </button>
+    <div class="chat-history-title">Hoy</div>
+    <div
+      *ngFor="let chat of chatHistory"
+      (click)="loadChat(chat)"
+      [class.active]="chat.id === currentChat.id"
+      class="history-item"
+      (dblclick)="editTitle(chat)"
+    >
+      <i class="pi pi-th-large"></i>
+      <span class="label" *ngIf="!chat.editing">{{ chat.title }}</span>
+      <input
+        *ngIf="chat.editing"
+        [(ngModel)]="chat.title"
+        (blur)="chat.editing = false"
+        (keydown.enter)="chat.editing = false"
+      />
+    </div>
+  </div>
+
+  <div class="chat-window">
+    <div class="cards-container">
+      <div class="card-dashboard" >
+        <h4>Titulo 1</h4>
+          <p-chart type="bar" [data]="data" [options]="options"  />
+      </div>
+      <div class="card-dashboard" >
+        <h4>Titulo 2</h4>
+        <p-chart type="line" [data]="data" [options]="options"  />
+      </div>
+      <div class="card-dashboard" >
+        <h4>Titulo 3</h4>
+        <p-chart type="line" [data]="data" [options]="options"  />
+
+      </div>
+      <div class="card-dashboard" >
+        <h4>Titulo 4</h4>
+        <p-chart type="bar" [data]="data" [options]="options"  />
+      </div>
+    </div>
+  </div>
+</div>
+
+
