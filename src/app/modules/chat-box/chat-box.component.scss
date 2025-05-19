@@ -27,9 +27,10 @@ $bg-color-active: #F7FAEF;
   flex-direction: row;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
+
   &.sidebar-collapsed {
     .chat-sidebar, .label, .chat-history-title, .new-chat-btn {
-      display: none;
+      transition: width 0.3s ease;
     }
     .chat-window {
       width: 100%;
@@ -86,6 +87,7 @@ $bg-color-active: #F7FAEF;
       padding: 0;
       overflow: hidden;
       border: none;
+      transition: width 0.3s ease;
     }
 
     .collapse-toggle-btn {
@@ -185,6 +187,7 @@ $bg-color-active: #F7FAEF;
     background-color: $dark-bg;
     width: calc(100% - 260px);
 
+
     .messages-container {
       flex: 1;
       overflow-y: auto;
@@ -195,7 +198,7 @@ $bg-color-active: #F7FAEF;
         flex-direction: column;
 
         .chat-message {
-          padding: 1rem 0;
+          padding: 1rem 5rem;
           border-bottom: 1px solid $bg-hover;
 
           &:last-child {
@@ -252,13 +255,12 @@ $bg-color-active: #F7FAEF;
 
           &.user {
             background-color: $user-bg;
-            display: flex;
-            justify-content: flex-end; // Alinea TODO el mensaje a la derecha
+
 
             .message-content {
               display: flex;
               justify-content: flex-end;
-              margin-right: 19rem;
+              margin-right: 3.2rem;
               flex-direction: row-reverse; // Ícono a la derecha, texto a la izquierda
               align-items: flex-start;
               max-width: min(80%, 700px); // Límite máximo pero flexible
@@ -464,7 +466,7 @@ $bg-color-active: #F7FAEF;
 }
 
 // Responsive
-@media (max-width: 768px) {
+@media (max-width: 960px) {
   .chat-container {
     flex-direction: row;
 
@@ -493,6 +495,9 @@ $bg-color-active: #F7FAEF;
     i {
       font-size: 1rem;
     }
+  }
+  .chat-message{
+    padding: 1rem 0 !important;
   }
 
   .chat-message.user{
