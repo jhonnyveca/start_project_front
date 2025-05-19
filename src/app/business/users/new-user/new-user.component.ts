@@ -5,6 +5,7 @@ import {DropdownModule} from 'primeng/dropdown';
 import {InputText} from 'primeng/inputtext';
 import {User} from '../../../../domain/user';
 import {MultiSelect} from 'primeng/multiselect';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-new-user',
@@ -13,7 +14,8 @@ import {MultiSelect} from 'primeng/multiselect';
     ButtonDirective,
     DropdownModule,
     InputText,
-    MultiSelect
+    MultiSelect,
+    RouterLink
   ],
   templateUrl: './new-user.component.html',
   standalone: true,

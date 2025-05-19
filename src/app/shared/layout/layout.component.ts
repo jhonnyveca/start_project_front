@@ -1,7 +1,7 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {ButtonDirective} from 'primeng/button';
 import {Menu} from 'primeng/menu';
-import {NgClass, NgIf} from '@angular/common';
+import {NgClass, NgIf, NgOptimizedImage} from '@angular/common';
 
 import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 

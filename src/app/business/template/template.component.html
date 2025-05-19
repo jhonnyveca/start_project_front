@@ -1,8 +1,8 @@
-<div class="document-container">
+<div class="template-container">
   <div class="form-grid">
     <div class="form-field">
       <label >
-        Administracion de Documentos
+        Plantillas
       </label>
     </div>
     <div class="form-field">
@@ -10,15 +10,14 @@
         <ng-template #start>
         </ng-template>
         <ng-template #end>
-          <span style="margin-right: 4px; color: #E62020;">Administracion</span>/ Documentos
+          <span style="margin-right: 4px; color: #E62020;">Administracion</span>/ Plantillas
         </ng-template>
       </p-toolbar>
     </div>
     <div class="form-field">
       <p-toolbar >
         <ng-template #start>
-          <button pButton  label="importar" icon="pi pi-download" class="btn-document-import"></button>
-          <button pButton  label="Indexacion" icon="pi pi-list-check"  class="btn-document-index"></button>
+          <button pButton label="Nueva Plantilla" icon="pi pi-plus" class="btn-new-template"></button>
         </ng-template>
         <ng-template #end>
 
@@ -29,7 +28,7 @@
   <div class="card">
     <p-table
       #dt
-      [value]="documents"
+      [value]="templates"
       [rows]="7"
       [rowsPerPageOptions]="[7, 10, 25]"
       [columns]="cols"
@@ -37,15 +36,14 @@
       [globalFilterFields]="['documentName', 'createDate', 'idUser']"
       [tableStyle]="{ 'min-width': '75rem' }"
 
-      [(selection)]="selectedDocuments"
       [rowHover]="true"
       dataKey="id"
-      currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} documentos"
+      currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} plantillas"
       [showCurrentPageReport]="true"
     >
       <ng-template  #caption >
         <div class="search">
-          <h4 class="m-0">Tabla de archivos </h4>
+          <h4 class="m-0">Banco de preguntas </h4>
           <p-iconfield>
             <p-inputicon styleClass="pi pi-search" />
             <input pInputText type="text"
@@ -57,29 +55,24 @@
 
       <ng-template #header>
         <tr>
-          <th style="width: 3rem">
-            <p-tableHeaderCheckbox />
-          </th>
-          <th pSortableColumn="name" style="min-width:25rem">
-            Nombre de archivo
+          <th pSortableColumn="name" style="min-width:20rem">
+            Preguntas modelo
             <p-sortIcon field="name" />
           </th>
-          <th style="min-width: 10rem">Fecha de subida</th>
+          <th style="min-width: 10rem">Fecha de creacion</th>
           <th style="min-width: 10rem">Usuario</th>
           <th style="min-width: 12rem">Acciones</th>
         </tr>
       </ng-template>
-      <ng-template #body let-document>
+      <ng-template #body let-question>
         <tr>
-          <td style="width: 3rem">
-            <p-tableCheckbox [value]="document" />
-          </td>
-          <td style="min-width: 16rem">{{ document.documentName }}</td>
-          <td>{{ document.createDate}}</td>
-          <td>{{ document.idUser }}</td>
+
+          <td style="min-width: 16rem">{{ question.questionTemplate }}</td>
+          <td>{{ question.createDate}}</td>
+          <td>{{ question.idUser }}</td>
           <td>
-            <button pButton icon="pi pi-eye" class="btn-edit" [rounded]="true" [outlined]="true" (click)="editProduct(document)"></button>
-            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProduct(document)" />
+            <button pButton icon="pi pi-pencil" class="btn-edit" [rounded]="true" [outlined]="true" (click)="editProduct(question)"></button>
+            <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProduct(question)" />
           </td>
         </tr>
       </ng-template>
@@ -87,6 +80,5 @@
 
   </div>
 </div>
-
 
 

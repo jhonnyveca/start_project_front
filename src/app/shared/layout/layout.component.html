@@ -11,14 +11,15 @@
   </button>
   <div class="title-box">
     <h1 class="title">
-      <!--<img src="../../../assets/images/ali-removebg-preview.png" alt="logo" />-->
+     <img src="assets/alilogo.png" alt="logo" height="50%" width="90%" />
     </h1>
   </div>
   <span class="toolbar-spacer"></span>
   <!-- User Menubar -->
   <p-menu #userMenu [model]="userItems" [popup]="true"></p-menu>
   <div class="user-profile" (click)="userMenu.toggle($event)">
-    <img src="https://i.pravatar.cc/150?img=59" alt="User" class="user-avatar" />
+    <i class="pi pi-user"></i>
+    <!--<img src="https://i.pravatar.cc/150?img=59" alt="User" class="user-avatar" />-->
     <span class="user-name">Emiliano Rodriguez</span>
     <i class="pi pi-angle-down user-icon"></i>
   </div>
@@ -49,8 +50,7 @@
         <span *ngIf="!sidebarCollapsed">Dashboard</span>
       </div>
     </li>
-
-    <li class="group-title" *ngIf="!sidebarCollapsed">Administración</li>
+    <li class="group-title" >Administración</li>
     <li routerLink="/users" routerLinkActive="active" class="clickable" (click)="onMenuOptionClick()">
       <div
         class="module-title">
@@ -65,9 +65,16 @@
       </div>
     </li>
 
+    <li routerLink="/template" routerLinkActive="active" class="clickable" (click)="onMenuOptionClick()">
+      <div class="module-title">
+        <i class="material-symbols-outlined">layers</i>
+        <span *ngIf="!sidebarCollapsed">Plantillas</span>
+      </div>
+    </li>
+
     <li routerLink="/indicators" routerLinkActive="active" class="clickable" (click)="onMenuOptionClick()">
       <div class="module-title">
-        <i class="pi pi-chart-bar"></i>
+        <i class="material-symbols-outlined">rocket_launch</i>
         <span *ngIf="!sidebarCollapsed">Indicadores</span>
       </div>
     </li>

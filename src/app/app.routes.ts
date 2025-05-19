@@ -30,6 +30,10 @@ export const routes: Routes = [
         loadComponent:()=> import('./business/dashboard/dashboard.component'),
       },
       {
+        path:'template',
+        loadComponent:()=> import('./business/template/template.component'),
+      },
+      {
         path:'',
         redirectTo:'chat-box',
         pathMatch:'full'
@@ -37,7 +41,7 @@ export const routes: Routes = [
     ]
   },
   {
-    path:'**',
-    redirectTo:'chat-box',
+    path:'error-page',
+    loadComponent:()=> import('./shared/pages/error-page/error-page.component'),
   }
 ];

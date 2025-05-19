@@ -1,0 +1,207 @@
+.indicator-container{
+  position: relative;
+  padding: 0 5rem;
+  width: 100%;
+}
+.card-indicator {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+}
+.btn-edit{
+  margin-right: 0.5rem ;
+}
+::ng-deep .p-toolbar {
+  border: 0!important;
+  padding: 0!important;
+  margin-right: 1rem;
+  background-color: transparent!important;
+}
+::ng-deep .p-panel {
+  margin: 2rem 1rem 0;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  .p-panel-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    color: #A30000;
+    font-weight: 600;
+  }
+
+  .p-panel-content {
+    padding: 1rem;
+  }
+}
+
+.panel-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+.panel-subtitle {
+  font-weight: 600;
+  font-size: 16px !important;
+  padding: 0.3rem 0;
+  color: #334155;
+}
+.btn-filter{
+  margin: 1rem 0.1rem;
+  background-color: #3B8700;
+  border: 1px solid #3B8700;
+  color: white;
+
+  &:hover {
+    background-color: darken(#3B8700, 5%) !important;
+    border-color: darken(#3B8700, 5%) !important;
+  }
+  &.p-button-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+
+    &:hover {
+      background-color: #5a6268 !important;
+      border-color: #545b62 !important;
+    }
+  }
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  padding: 1rem 1rem 0 1rem;
+}
+
+.indicator-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.title-indicator {
+  display: flex;
+  gap: 5rem;
+  padding: 0 1rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+  label {
+    font-weight: 500;
+    font-size: 30px;
+    color: #A30000;
+  }
+  input, p-dropdown {
+    width: 100%;
+  }
+}
+.panel-field {
+  display: flex;
+  flex-direction: column;
+  label {
+    font-weight: 600;
+    font-size: 16px;
+    color: #A30000;
+    margin-bottom: 0.5rem;
+  }
+  input, p-dropdown {
+    width: 100%;
+  }
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.toolbar-spacing{
+
+  font-weight: 600;
+  font-size: 14px;
+}
+/* Estilos para los gráficos Vega */
+.vega {
+  width: 100%;
+  min-height: 250px;
+}
+
+h4{
+  color: #A30000;
+}
+.btn-report{
+ margin: 0 1rem;
+  border: 1px solid #3B8700;
+  color: #3B8700;
+  &:hover {
+    color: white;
+    background-color: darken(#3B8700, 5%) !important;
+    border-color: darken(#3B8700, 5%) !important;
+  }
+}
+
+
+
+/* Estilos para los paneles */
+::ng-deep .p-panel {
+  background-color: white;
+  border-radius: 6px;
+  margin-top: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+
+  .p-panel-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+    color: #A30000;
+
+    font-weight: 600;
+  }
+  .p-panel-content {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .indicator-container{
+    position: relative;
+    padding: 0 0.1rem;
+    width: 100%;
+  }
+  .form-grid {
+    grid-template-columns: repeat(1, 1fr);
+    padding: 2.5rem 1rem 1rem 1.5rem;
+
+  }
+  .indicator-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 0.1rem;
+  }
+  .panel-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+  }
+  ::ng-deep .p-panel {
+    margin: 1rem;
+    padding: 0 !important;
+  }
+  .toolbar-spacing{
+    padding:0;
+    display: flex;
+  }
+  .card-indicator {
+    margin: 0;
+    padding: 0.5rem;
+  }
+  .search {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 15px;
+  }
+
+}

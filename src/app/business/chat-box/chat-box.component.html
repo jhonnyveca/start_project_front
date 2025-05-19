@@ -1,44 +1,100 @@
-<div class="chat-container"
-     [class.sidebar-collapsed]="isSidebarCollapsed"
->
-  <div class="chat-sidebar" [class.collapsed]="isSidebarCollapsed">
-    <button class="collapse-toggle-btn" (click)="toggleSidebar()">
-      <i class="pi" [ngClass]="{ 'pi-angle-left': !isSidebarCollapsed, 'pi-angle-right': isSidebarCollapsed }"></i>
+<div class="chat-container" [class.sidebar-collapsed]="isSidebarCollapsed">
+  <div class="main-content">
+    <!-- Botón flotante para expandir -->
+    <button *ngIf="isSidebarCollapsed" class="expand-sidebar-btn" (click)="toggleSidebar()">
+      <i class="pi pi-angle-right"></i>
     </button>
-    <button class="new-chat-btn" (click)="newChat()">
-      <i class="pi pi-plus"></i> <span class="label">Nuevo chat</span>
-    </button>
-    <div class="chat-history-title">Hoy</div>
-    <div
-      *ngFor="let chat of chatHistory"
-      (click)="loadChat(chat)"
-      [class.active]="chat.id === currentChat.id"
-      class="history-item"
-      (dblclick)="editTitle(chat)"
-    >
-      <i class="pi pi-comments"></i>
-      <span class="label" *ngIf="!chat.editing">{{ chat.title }}</span>
-      <input
-        *ngIf="chat.editing"
-        [(ngModel)]="chat.title"
-        (blur)="chat.editing = false"
-        (keydown.enter)="chat.editing = false"
-      />
+
+    <div class="chat-window">
+      <div class="messages-container">
+        <div class="chat-messages">
+          <!-- Mensajes existentes -->
+          <div *ngFor="let message of currentChat.messages; let i = index" class="chat-message" [ngClass]="[message.role]">
+            <div class="message-content">
+              <div class="avatar" [ngClass]="message.role">
+                <i *ngIf="message.role === 'user'" class="pi pi-user"></i>
+                <span *ngIf="message.role === 'bot'" class="material-symbols-outlined">smart_toy</span>
+              </div>
+              <div class="text-content">
+                <div class="message-text">{{ message.content }}</div>
+                <div *ngIf="message.role === 'bot' && message.done" class="star-rating">
+                  <p-rating [(ngModel)]="message.rating"
+                            (onRate)="rateMessage(i, message.rating)"
+                            [readonly]="false">
+                  </p-rating>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Estado inicial cuando no hay mensajes -->
+          <div class="empty-state" *ngIf="currentChat.messages.length === 0">
+            <div class="empty-state-content">
+              <h1>Bienvenido(a) al Asistente Inteligente</h1>
+              <h4>¿En qué puedo ayudarte?</h4>
+              <div class="suggestion-buttons">
+                <button class="suggestion-btn" (click)="suggestQuestion('¿Cómo funciona el Asistente Inteligente?')">
+                  "¿Cómo funciona el Asistente Inteligente?"
+                </button>
+                <button class="suggestion-btn" (click)="suggestQuestion('Dame ideas para escribir un poema')">
+                  "Dame ideas para escribir un poema"
+                </button>
+                <button class="suggestion-btn" (click)="suggestQuestion('Explica la teoría de la relatividad')">
+                  "Explica la teoría de la relatividad"
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="input-spacer" *ngIf="currentChat.messages.length > 0"></div>
+        <div class="floating-input-wrapper">
+          <div class="chat-input-container" [class.has-messages]="currentChat.messages.length > 0">
+            <div class="input-wrapper">
+              <input type="text"
+                     [(ngModel)]="userInput"
+                     (keydown.enter)="sendMessage()"
+                     placeholder="Envía un mensaje..."
+                     class="chat-input" />
+              <button class="btn-send"
+                      [disabled]="!userInput.trim() && !isGenerating"
+                      (click)="isGenerating ? stopGeneration() : sendMessage()">
+                <i class="pi" [ngClass]="{
+                'pi-arrow-circle-up': !isGenerating,
+                'pi-stop-circle': isGenerating
+              }"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input flotante -->
+
     </div>
   </div>
 
-  <div class="chat-window">
-    <div class="chat-messages">
-      <div *ngFor="let message of currentChat.messages" class="chat-message" [ngClass]="[message.role]">
-        <strong *ngIf="message.role === 'user'">Tú: </strong>
-        <strong *ngIf="message.role === 'bot'">Asistente: </strong>
-        <span>{{ message.content }}</span>
-      </div>
-    </div>
-    <div class="chat-input">
-      <input type="text" [(ngModel)]="userInput" (keydown.enter)="sendMessage()" placeholder="Escribe tu mensaje..." />
-      <button class="btn-send" pButton icon="pi pi-send" (click)="sendMessage()"></button>
+  <!-- Sidebar -->
+  <div class="chat-sidebar" [class.collapsed]="isSidebarCollapsed">
+    <button class="collapse-toggle-btn" (click)="toggleSidebar()">
+      <i class="pi pi-angle-left"></i>
+    </button>
+    <button class="new-chat-btn" (click)="newChat()">
+      <i class="material-symbols-outlined">add_comment</i>
+      <span class="label">Nuevo chat</span>
+    </button>
+    <div class="chat-history-title" *ngIf="!isSidebarCollapsed">Historial de chat</div>
+    <div *ngFor="let chat of chatHistory"
+         (click)="loadChat(chat)"
+         [class.active]="chat.id === currentChat.id"
+         class="history-item"
+         (dblclick)="editTitle(chat)">
+      <i class="material-symbols-outlined">forum</i>
+      <span class="label" *ngIf="!chat.editing">{{ chat.title }}</span>
+      <input *ngIf="chat.editing"
+             [(ngModel)]="chat.title"
+             (blur)="chat.editing = false"
+             (keydown.enter)="chat.editing = false" />
     </div>
   </div>
 </div>
-

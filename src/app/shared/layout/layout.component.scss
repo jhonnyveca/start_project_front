@@ -10,9 +10,11 @@
   align-items: center;
   padding: 0 1rem;
   z-index: 10;
-  background-color: rgb(208, 211, 212);
+  background-color: #FFFFFF;
   justify-content: flex-start;
-  transition: all 0.3s ease-in-out;
+  transition: padding-left 0.3s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
 
   &.with-sidebar {
     padding-left: 250px;
@@ -46,21 +48,20 @@
   white-space: nowrap;
   margin-left: 20px;
   color: #ef3340;
-
 }
-
 .sidebar-desktop {
   position: fixed;
   top: 0;
   left: 0;
   width: 250px;
   height: 100vh;
-  background-color: #ef3340;
+  background-color: #A30000;
   padding: 0.5rem;
   overflow-y: auto;
   transition: width 0.3s ease, transform 0.3s ease;
   z-index: 100;
   transform: translateX(-100%);
+
 
   &.visible {
     transform: translateX(0);
@@ -108,13 +109,18 @@
     margin-top: 10px;
     padding: 0;
 
-    .group-title {
+    li.group-title {
       font-size: 0.75rem;
       text-transform: uppercase;
       font-weight: 600;
       padding: 0.5rem 1rem;
       color: white;
       margin-top: 0.5rem;
+
+      &:hover {
+       background-color: transparent;
+      }
+
     }
 
     li {
@@ -124,10 +130,11 @@
       border-radius: 10px;
       padding: 0 1rem;
       cursor: pointer;
+      margin-bottom: 0.2rem;
       transition: background-color 0.2s ease;
 
       &:hover {
-        background-color: #fa6060;
+        background-color: #E62020;
       }
       .module-title {
         display: flex;
@@ -152,12 +159,11 @@
       cursor: pointer;
 
       &.active {
-        background-color: #fc7272;
+        background-color: #E62020;
       }
     }
   }
 }
-
 .sidebar-desktop.collapsed {
   .sidenav-list {
     li {
@@ -175,13 +181,15 @@
         margin-right: 0;
       }
     }
+    li.group-title {
+      display: none;
+
+    }
   }
 }
-
-
 .main-content {
   margin-top: 60px;
-  padding: 1rem;
+/*  padding: 1rem;*/
   margin-left: 250px;
   transition: margin-left 0.3s ease;
 
@@ -193,7 +201,6 @@
     margin-left: 60px;
   }
 }
-
 .module-title span {
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
@@ -204,7 +211,7 @@
   cursor: pointer;
   padding: 0.3rem 0.6rem;
   border-radius: 20px;
-  transition: background-color 0.2s ease;
+  transition: margin-left 0.3s ease;
 
   &:hover {
     background-color: #e0e0e0;
@@ -214,10 +221,20 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
+    border: 2px solid #78be21;
+  }
+  .pi.pi-user{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    text-align: center;
+    align-content: center;
+    border: 2px solid #3B8700;
+    color: #3B8700;
   }
 
   .user-name {
-    color: black;
+    color: #3B8700;
     font-weight: 500;
 
   }
@@ -243,6 +260,7 @@
   .app-toolbar{
     margin: 0 !important;
     padding: 0 1rem !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   }
   .sidebar-desktop {
     padding: 0;
@@ -255,13 +273,16 @@
       }
     }
   }
+  li.clickable.active{
+    margin: 0 0.5rem;
+  }
   .menu-button {
     margin-left: 0 !important;
     left: 0.4rem !important;
   }
 
   .title-box .title {
-    position: absolute;
+    position: fixed;
     margin: 0;
     left: 50%;
     transform: translateX(-50%);
@@ -271,11 +292,11 @@
     margin-left: 250px;
   }
   .main-content.collapsed-sidebar {
-    margin-left: 60px;
+    margin-left: 0;
   }
   .main-content {
     margin-top: 60px;
-    padding: 1rem;
+    /*padding: 1rem;*/
     margin-left: 0;
     transition: margin-left 0.3s ease;
   }

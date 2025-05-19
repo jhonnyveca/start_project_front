@@ -1,0 +1,112 @@
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 2rem;
+
+  .error-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 3rem 4rem;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+
+    .error-icon {
+      font-size: 5rem;
+      color: #ff5252;
+      margin-bottom: 1.5rem;
+      animation: bounce 1s infinite alternate;
+    }
+
+    h1 {
+      color: #2c3e50;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .error-message {
+      color: #7f8c8d;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+    }
+
+    .error-actions {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+
+      .primary-btn {
+        background: #3B8700;
+        padding: 1rem;
+        border: none;
+        margin-right: 0.5rem;
+      }
+
+      .secondary-btn {
+        background: transparent;
+        padding: 1rem;
+        color: #3B8700;
+        border: 2px solid #3B8700;
+      }
+    }
+
+    .error-footer {
+      color: #95a5a6;
+      font-size: 0.9rem;
+
+      a {
+        color: #3B8700;
+        text-decoration: none;
+        font-weight: 500;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+.pi {
+  font-size: 6rem;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-15px); }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .error-container {
+    padding: 1rem;
+
+    .error-content {
+      padding: 2rem 1.5rem;
+
+      .error-actions {
+        flex-direction: column;
+
+        button {
+          width: 100%;
+          margin-bottom: 1rem;
+
+          &.p-ml-3 {
+            margin-left: 0 !important;
+          }
+        }
+      }
+    }
+  }
+}

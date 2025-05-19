@@ -1,17 +1,14 @@
 import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  HostListener,
-  inject,
-  PLATFORM_ID,
-  QueryList,
-  ViewChildren
+  Component, ElementRef,
+  HostListener, OnInit, ViewChild,
 } from '@angular/core';
-
-import {isPlatformBrowser, NgClass, NgForOf, NgIf} from '@angular/common';
+import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {UIChart} from 'primeng/chart';
+import vegaEmbed from 'vega-embed';
+import { ButtonDirective} from 'primeng/button';
+import {Panel} from 'primeng/panel';
+import {Select} from 'primeng/select';
+import {Toolbar} from 'primeng/toolbar';
 
 interface ChatMessage {
   role: 'user' | 'bot';
@@ -30,15 +27,17 @@ interface ChatSession {
     NgForOf,
     NgIf,
     ReactiveFormsModule,
-    NgClass,
     FormsModule,
-    UIChart
+    ButtonDirective,
+    Panel,
+    Select
   ],
   templateUrl: './dashboard.component.html',
   standalone: true,
   styleUrl: './dashboard.component.scss'
 })
-export default class DashboardComponent implements AfterViewInit{
+export default class DashboardComponent implements OnInit {
+
   isSidebarCollapsed: boolean = false;
 
 
@@ -51,14 +50,9 @@ export default class DashboardComponent implements AfterViewInit{
     this.isSidebarCollapsed = window.innerWidth <= 768;
   }
 
-  @ViewChildren(UIChart) charts!: QueryList<UIChart>;
 
   toggleSidebar(): void {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
-    // Esperar a que la animación/estilos terminen
-    setTimeout(() => {
-      this.charts?.forEach(chart => chart?.refresh());
-    }, 300); // debe coincidir con tu transición en CSS
   }
 
   chatHistory: ChatSession[] = [
@@ -94,91 +88,78 @@ export default class DashboardComponent implements AfterViewInit{
     this.chatHistory.unshift(<ChatSession>newSession);
     this.currentChat = newSession;
   }
+
   editTitle(chat: ChatSession): void {
     chat.editing = true;
   }
 
-  data: any;
+  anios = [
+    { name: '2025', code: '1' },
+    { name: '2024', code: '2' },
+    { name: '2023', code: '3' }
+  ];
+  category = [
+    { name: 'A', code: '1' },
+    { name: 'B', code: '2' },
+    { name: 'C', code: '3' }
+  ];
 
-  options: any;
+  /// Graficos
+  @ViewChild('chart1', {static: true}) chart1Ref!: ElementRef;
+  @ViewChild('chart2', {static: true}) chart2Ref!: ElementRef;
+  @ViewChild('chart3', {static: true}) chart3Ref!: ElementRef;
+  @ViewChild('chart4', {static: true}) chart4Ref!: ElementRef;
 
-  platformId = inject(PLATFORM_ID);
-
-  constructor(private cd: ChangeDetectorRef) {}
-
-  ngOnInit() {
-    this.initChart();
+  lineChartSpec(title: string, data: any[]) {
+    return {
+      $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
+      description: title,
+      width: 'container',
+      height: 250,
+      data: {values: data},
+      mark: 'line',
+      encoding: {
+        x: {field: 'date', type: 'temporal', title: 'Fecha'},
+        y: {field: 'value', type: 'quantitative', title: 'Valor'}
+      },
+      title
+    };
   }
-  ngAfterViewInit(): void {
-    this.refreshCharts();
+
+
+  ngOnInit(): void {
     this.updateSidebarForScreenSize();
+    const data1 = [
+      {date: '2024-01-01', value: 10},
+      {date: '2024-02-01', value: 20},
+      {date: '2024-03-01', value: 15}
+    ];
+
+    const data2 = [
+      {date: '2024-01-01', value: 30},
+      {date: '2024-02-01', value: 50},
+      {date: '2024-03-01', value: 40}
+    ];
+
+    const data3 = [
+      {date: '2024-01-01', value: 5},
+      {date: '2024-02-01', value: 25},
+      {date: '2024-03-01', value: 35}
+    ];
+
+    const data4 = [
+      {date: '2024-01-01', value: 60},
+      {date: '2024-02-01', value: 30},
+      {date: '2024-03-01', value: 90}
+    ];
+
+    // @ts-ignore
+    vegaEmbed(this.chart1Ref.nativeElement, this.lineChartSpec('Gráfico 1', data1), {actions: false});
+    // @ts-ignore
+    vegaEmbed(this.chart2Ref.nativeElement, this.lineChartSpec('Gráfico 2', data2), {actions: false});
+    // @ts-ignore
+    vegaEmbed(this.chart3Ref.nativeElement, this.lineChartSpec('Gráfico 3', data3), {actions: false});
+    // @ts-ignore
+    vegaEmbed(this.chart4Ref.nativeElement, this.lineChartSpec('Gráfico 4', data4), {actions: false});
   }
-  refreshCharts(): void {
-    this.cd.detectChanges(); // Asegura que los cambios en DOM estén aplicados
-    this.charts?.forEach(chart => chart?.refresh());
-  }
-
-  initChart() {
-    if (isPlatformBrowser(this.platformId)) {
-      const documentStyle = getComputedStyle(document.documentElement);
-      const textColor = documentStyle.getPropertyValue('--p-text-color');
-      const textColorSecondary = documentStyle.getPropertyValue('--p-text-muted-color');
-      const surfaceBorder = documentStyle.getPropertyValue('--p-content-border-color');
-
-      this.data = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [
-          {
-            label: 'My First dataset',
-            backgroundColor: documentStyle.getPropertyValue('--p-cyan-500'),
-            borderColor: documentStyle.getPropertyValue('--p-cyan-500'),
-            data: [65, 59, 80, 81, 56, 55, 40]
-          },
-          {
-            label: 'My Second dataset',
-            backgroundColor: documentStyle.getPropertyValue('--p-gray-500'),
-            borderColor: documentStyle.getPropertyValue('--p-gray-500'),
-            data: [28, 48, 40, 19, 86, 27, 90]
-          }
-        ]
-      };
-
-      this.options = {
-        maintainAspectRatio: false,
-        aspectRatio: 0.8,
-        plugins: {
-          legend: {
-            labels: {
-              color: textColor
-            }
-          }
-        },
-        scales: {
-          x: {
-            ticks: {
-              color: textColorSecondary,
-              font: {
-                weight: 500
-              }
-            },
-            grid: {
-              color: surfaceBorder,
-              drawBorder: false
-            }
-          },
-          y: {
-            ticks: {
-              color: textColorSecondary
-            },
-            grid: {
-              color: surfaceBorder,
-              drawBorder: false
-            }
-          }
-        }
-      };
-      this.cd.markForCheck()
-    }
-  }
-
 }

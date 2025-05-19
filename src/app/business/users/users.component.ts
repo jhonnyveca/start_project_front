@@ -1,13 +1,14 @@
 import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {Table, TableModule} from 'primeng/table';
 import {FormsModule} from '@angular/forms';
-import {Button} from 'primeng/button';
+import {Button, ButtonDirective} from 'primeng/button';
 import {Toolbar} from 'primeng/toolbar';
 import {UserService} from '../../../service/user.service';
 import {User} from '../../../domain/user';
 import {IconField} from 'primeng/iconfield';
 import {InputIcon} from 'primeng/inputicon';
 import {InputText} from 'primeng/inputtext';
+import {RouterLink} from '@angular/router';
 
 
 interface Column {
@@ -29,7 +30,9 @@ interface ExportColumn {
     Button,
     InputText,
     IconField,
-    InputIcon
+    InputIcon,
+    RouterLink,
+    ButtonDirective
   ],
   templateUrl: './users.component.html',
   standalone: true,

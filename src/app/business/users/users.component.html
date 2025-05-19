@@ -1,8 +1,8 @@
-<div class="card">
+<div class="user-container">
   <div class="form-grid">
     <div class="form-field">
       <label>
-        Administracion de usuarios
+        Administracion de Usuarios
       </label>
     </div>
     <div class="form-field">
@@ -10,13 +10,21 @@
         <ng-template #start>
         </ng-template>
         <ng-template #end>
-          <p-button label="Registrar usuario" icon="pi pi-plus" class="mr-2" (onClick)="openNew()" />
+          <span style="margin-right: 4px; color: #E62020;">Administracion</span>/ Usuarios
+        </ng-template>
+      </p-toolbar>
+    </div>
+    <div class="form-field">
+      <p-toolbar>
+        <ng-template #start>
+          <button pButton label="Registrar" icon="pi pi-plus" class="btn-user-register" [routerLink]="['register']"></button>
+        </ng-template>
+        <ng-template #end>
         </ng-template>
       </p-toolbar>
     </div>
   </div>
-
-
+  <div class="card">
     <p-table
       #dt
       [value]="users"
@@ -26,7 +34,6 @@
       [paginator]="true"
       [globalFilterFields]="['id', 'name', 'email', 'role', 'appUser']"
       [tableStyle]="{ 'min-width': '75rem' }"
-      showGridlines
       [(selection)]="selectedUsers"
       [rowHover]="true"
       dataKey="id"
@@ -77,7 +84,7 @@
           <td>{{ user.role }}</td>
           <td>{{ user.appUser}}</td>
           <td>
-            <p-button icon="pi pi-pencil" class="btn-edit" [rounded]="true" [outlined]="true" (click)="editProduct(user)" />
+            <button pButton icon="pi pi-pencil" class="btn-edit" [rounded]="true" [outlined]="true" (click)="editProduct(user)"></button>
             <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProduct(user)" />
           </td>
         </tr>
@@ -85,5 +92,7 @@
     </p-table>
 
   </div>
+</div>
+
 
 

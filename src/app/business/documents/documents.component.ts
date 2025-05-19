@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import {Toolbar} from 'primeng/toolbar';
 import {Table, TableModule} from 'primeng/table';
-import {Button} from 'primeng/button';
+import {Button, ButtonDirective} from 'primeng/button';
 import {Document} from '../../../domain/document';
 
 import {DocumentService} from '../../../service/document.service';
@@ -19,16 +19,17 @@ interface Column {
 }
 @Component({
   selector: 'app-documents',
-  imports: [
-    Toolbar,
-    TableModule,
-    Button,
-    DropdownModule,
-    FormsModule,
-    IconField,
-    InputIcon,
-    InputText
-  ],
+    imports: [
+        Toolbar,
+        TableModule,
+        Button,
+        DropdownModule,
+        FormsModule,
+        IconField,
+        InputIcon,
+        InputText,
+        ButtonDirective
+    ],
   templateUrl: './documents.component.html',
   standalone: true,
   styleUrl: './documents.component.scss'

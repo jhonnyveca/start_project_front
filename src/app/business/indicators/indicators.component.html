@@ -1,1 +1,50 @@
-<p>indicators works!</p>
+<div class="indicator-container">
+  <div class="form-grid">
+    <div class="form-field">
+      <label >
+        Indicadores
+      </label>
+    </div>
+    <div class="form-field">
+      <p-toolbar class="toolbar-spacing">
+        <ng-template #start>
+        </ng-template>
+        <ng-template #end>
+          <span style="margin-right: 4px; color: #E62020;">Administracion</span>/ Indicadores
+        </ng-template>
+      </p-toolbar>
+    </div>
+
+  </div>
+  <p-panel  header="Panel de filtros" [toggleable]="true">
+
+    <div class="panel-grid">
+      <div class="panel-field">
+        <label class="panel-subtitle">Categoria</label>
+        <p-select [options]="category" optionLabel="name" placeholder="Selecciona una opcion" class="mr-2" />
+      </div>
+      <div class="panel-field">
+        <label class="panel-subtitle">Año</label>
+        <p-select [options]="anios" optionLabel="name" placeholder="Selecciona una opcion" class="mr-2" />
+      </div>
+    </div>
+    <button pButton type="submit" label="Filtrar" icon="pi pi-filter"  class="btn-filter"></button>
+    <button pButton type="submit" label="Limpiar" icon="pi pi-filter-slash"  class="btn-filter" severity="secondary"></button>
+  </p-panel>
+  <div class="indicator-grid">
+    <p-panel header="Grafico de grado de satisfaccion del usuario">
+      <div class="title-indicator">
+<!--        <h4>Grafico de grado de satisfaccion del usuario</h4>-->
+      </div>
+      <div #vegaContainer class="vega"></div>
+      <button pButton type="submit" label="Reporte" icon="pi pi-file-excel" [outlined]="true" class="btn-report"></button>
+    </p-panel>
+    <p-panel header="Grafico de tiempo promedio de respuesta">
+      <!--<h4>Grafico de tiempo promedio de respuesta</h4>-->
+      <div #vegaLineChart class="vega"></div>
+      <button pButton type="submit" label="Reporte" icon="pi pi-file-excel"  [outlined]="true"  class="btn-report"></button>
+    </p-panel>
+  </div>
+</div>
+
+

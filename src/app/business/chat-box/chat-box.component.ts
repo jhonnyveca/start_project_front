@@ -1,11 +1,16 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {ButtonDirective} from 'primeng/button';
+
 import {NgClass, NgForOf, NgIf} from '@angular/common';
+import {Subject, take} from 'rxjs';
+import {Rating} from 'primeng/rating';
+
 
 interface ChatMessage {
   role: 'user' | 'bot';
   content: string;
+  rating?: number | null;
+  done?: boolean;
 }
 
 interface ChatSession {
@@ -19,24 +24,38 @@ interface ChatSession {
   selector: 'app-chat-box',
   imports: [
     FormsModule,
-    ButtonDirective,
     NgIf,
     NgClass,
-    NgForOf
+    NgForOf,
+    Rating
   ],
   templateUrl: './chat-box.component.html',
   standalone: true,
   styleUrl: './chat-box.component.scss'
 })
-export default class ChatBoxComponent implements OnInit {
-
+export default class ChatBoxComponent implements OnInit, OnDestroy {
   isSidebarCollapsed: boolean = false;
-  done:boolean = false;
+  userInput: string = '';
+  isGenerating = false;
+  private cancelGeneration = new Subject<void>();
+  private generationInterval?: any;
+
+
+  chatHistory: ChatSession[] = [
+    {
+      id: 1,
+      title: 'Pedido de ayuda',
+      messages: [{ role: 'bot', content: 'Claro, dime más sobre tu problema.' }],
+      editing: false
+    }
+  ];
+
+  currentChat: ChatSession = this.chatHistory[0];
 
   ngOnInit() {
     this.updateSidebarForScreenSize();
+    this.initializeNewChat();
   }
-
   @HostListener('window:resize')
   onResize() {
     this.updateSidebarForScreenSize();
@@ -50,87 +69,134 @@ export default class ChatBoxComponent implements OnInit {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
   }
 
-  chatHistory: ChatSession[] = [
-    {
-      id: 1, title: 'Consulta inicial', messages: [{role: 'bot', content: 'Hola, ¿en qué puedo ayudarte?'}],
-      editing: false
-    },
-    {
-      id: 2, title: 'Pedido de ayuda', messages: [{role: 'bot', content: 'Claro, dime más sobre tu problema.'}],
-      editing: false
-    }
-  ];
-
-  currentChat: { messages: { role: string; content: string }[]; id: number; title: string } = this.chatHistory[0]; // por defecto
-  userInput: string = '';
-
-  get messages(): {
-    role: string; content: string }[] {
-    return this.currentChat.messages;
-  }
-
-  sendMessage(): void {
-
-    if (!this.userInput.trim()) return;
-
-    // Añadir mensaje del usuario
-    const userMessage: ChatMessage = {
-      role: 'user',
-      content: this.userInput.trim()
-    };
-
-    this.currentChat.messages.push(userMessage);
-
-    const isFirstMessage = this.currentChat.messages.filter(m => m.role === 'user').length === 1;
-    if (isFirstMessage) {
-      const title = this.userInput.length > 30
-        ? this.userInput.slice(0, 30) + '...'
-        : this.userInput;
-      this.currentChat.title = title;
-    }
-
-    this.userInput = '';
-
-    // Simular respuesta del bot
-    setTimeout(() => {
-      const fullResponse = 'Incremento Volumen: Incremento del X%, enfocado principalmente en canal DEX (X TM), ' +
-        'se visualiza que el volumen de Marzo 2025 es el más alto desde Enero 2024. ' +
-        'Deterioro UB x TM: Reducción del X%, principalmente por incremento de MP(S/X) y CC(S/X) y reducción del P.Bruto(S/X); atenuado por menor Dcto Comerc (S/X) y Dcto Promoc. (S/ X).';
-      const botMessage: ChatMessage & { done?: boolean } = { role: 'bot', content: '' };
-      this.currentChat.messages.push(botMessage);
-
-      let index = 0;
-      const interval = setInterval(() => {
-        if (index < fullResponse.length) {
-          botMessage.content += fullResponse[index];
-          index++;
-        } else {
-          clearInterval(interval);
-        }
-      }, 30);
-    }, 500);
-  }
-
   loadChat(chat: ChatSession): void {
     this.currentChat = chat;
+    this.scrollToBottom();
+  }
+
+  initializeNewChat() {
+    const newId = this.chatHistory.length + 1;
+    this.currentChat = {
+      id: newId,
+      title: 'Consulta incial',
+      messages: [], // Chat completamente vacío
+      editing: false
+    };
+    this.chatHistory.push(this.currentChat);
   }
 
   newChat(): void {
-    const newId = this.chatHistory.length + 1;
-    const newSession: { messages: { role: string; content: string }[]; id: number; title: string } = {
+    const newId = this.chatHistory.length > 0
+      ? Math.max(...this.chatHistory.map(c => c.id)) + 1
+      : 1;
+
+    const newSession: ChatSession = {
       id: newId,
       title: `Nuevo chat ${newId}`,
-      messages: [{
-        role: 'bot',
-        content: 'Hola, ¿cómo puedo ayudarte?'
-      }]
+      messages: [],
+      editing: false
     };
 
-    this.chatHistory.unshift(<ChatSession>newSession);
+    this.chatHistory.unshift(newSession);
     this.currentChat = newSession;
   }
+
   editTitle(chat: ChatSession): void {
     chat.editing = true;
+  }
+
+  suggestQuestion(question: string): void {
+    this.userInput = question;
+  }
+
+  rateMessage(messageIndex: number, rating: number | null | undefined) {
+    console.log(`Mensaje ${messageIndex} calificado con ${rating} estrellas`);
+
+  }
+
+  sendMessage() {
+    if (!this.userInput.trim()) return;
+
+    // Añadir mensaje del usuario
+    this.currentChat.messages.push({
+      role: 'user',
+      content: this.userInput.trim(),
+      rating: null,
+      done: true
+    });
+
+    this.userInput = '';
+    this.isGenerating = true;
+    this.scrollToBottom();
+
+    const responses = [
+      "Entiendo tu consulta. Vamos a analizarla en detalle...",
+      "Gracias por tu pregunta. Aquí tienes la información que necesitas:",
+      "Interesante pregunta. Permíteme explicarte lo siguiente:",
+      "Basado en los datos disponibles, puedo proporcionarte esta respuesta:"
+    ];
+    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+    // Simular generación de respuesta con posibilidad de cancelar
+    const fullResponse = `${randomResponse}\n\nLa inteligencia artificial como el Asistente Inteligente funciona procesando grandes cantidades de datos y encontrando patrones para generar respuestas coherentes. En este caso, estoy analizando tu pregunta y generando una respuesta basada en mi conocimiento.`;
+    let currentPosition = 0;
+
+    // Cancelar cualquier generación previa
+    this.cancelGeneration.next();
+
+    // Añadir mensaje vacío del bot
+    const botMessage: ChatMessage = {
+      role: 'bot',
+      content: '' ,
+      rating: null,
+      done: false
+    };
+    this.currentChat.messages.push(botMessage);
+
+    // Simular generación con efecto de escritura
+    this.generationInterval = setInterval(() => {
+      if (currentPosition < fullResponse.length) {
+        botMessage.content += fullResponse[currentPosition];
+        currentPosition++;
+        this.scrollToBottom();
+      } else {
+        this.stopGeneration();
+        botMessage.done = true;
+      }
+    }, 30);
+
+    // Manejar cancelación
+    this.cancelGeneration.pipe(take(1)).subscribe(() => {
+      clearInterval(this.generationInterval);
+      if (botMessage.content.length === 0) {
+        // Si no se generó nada, eliminar el mensaje vacío
+        this.currentChat.messages = this.currentChat.messages.filter(m => m !== botMessage);
+      } else {
+        // Marcar como completado si se cancela pero hay contenido
+        botMessage.done = true;
+      }
+      this.isGenerating = false;
+    });
+
+  }
+
+  stopGeneration() {
+    this.cancelGeneration.next();
+  }
+  ngOnDestroy() {
+    this.cancelGeneration.complete();
+    clearInterval(this.generationInterval);
+  }
+
+
+
+
+  private scrollToBottom(): void {
+    setTimeout(() => {
+      const messagesContainer = document.querySelector('.messages-container');
+      if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    }, 100);
   }
 
 }

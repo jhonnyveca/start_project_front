@@ -1,23 +1,23 @@
-.document-container{
+.template-container{
   position: relative;
   padding: 0 5rem;
   width: 100%;
 }
 .card {
   background: white;
-  padding: 0.8rem;
-  border-radius: 0.8rem;
+  padding: 1rem;
+  border-radius: 6px;
   margin: 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 .btn-edit{
-  margin-right: 0.5rem;
-  border: 1px solid #766F6F;
-  color: #766F6F;
+  margin-right: 0.5rem ;
+  border: 1px solid #3B8700;
+  color: #3B8700;
   &:hover {
-    background-color: darken(#E0DCDC, 8%) !important;
-    border-color: lighten(#766F6F, 1%) !important;
-    color: #766F6F;
+    background-color: darken(#F7FAEF, 8%) !important;
+    border-color: lighten(#3B8700, 1%) !important;
+    color: #3B8700;
   }
 }
 ::ng-deep .p-toolbar {
@@ -33,7 +33,6 @@
   padding: 2rem 1rem 0 1.5rem;
 
 }
-
 .form-field {
   display: flex;
   flex-direction: column;
@@ -51,15 +50,7 @@
 .m-0{
   margin: 0;
 }
-.btn-document-index{
-  background-color: #766F6F;
-  border: 1px solid #766F6F;
-  &:hover {
-    background-color: darken(#766F6F, 5%) !important;
-    border-color: darken(#766F6F, 5%) !important;
-  }
-}
-.btn-document-import{
+.btn-new-template{
   margin-right: 0.5rem;
   background-color: #3B8700;
   border: 1px solid #3B8700;
@@ -78,10 +69,8 @@
   font-size: 14px;
 }
 
-
-
 @media (max-width: 768px) {
-  .document-container{
+  .template-container{
     position: relative;
     padding: 0 0.1rem;
     width: 100%;
