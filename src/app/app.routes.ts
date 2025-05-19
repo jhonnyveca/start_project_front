@@ -7,31 +7,31 @@ export const routes: Routes = [
     children:[
       {
         path:'chat-box',
-        loadComponent: () => import('./business/chat-box/chat-box.component'),
+        loadComponent: () => import('./modules/chat-box/chat-box.component'),
       },
       {
         path:'users',
-        loadComponent:() => import('./business/users/users.component'),
+        loadComponent:() => import('./modules/users/users.component'),
       },
       {
         path:'users/register',
-        loadComponent:()=> import('./business/users/new-user/new-user.component'),
+        loadComponent:()=> import('./modules/users/new-user/new-user.component'),
       },
       {
         path:'documents',
-        loadComponent:() => import('./business/documents/documents.component'),
+        loadComponent:() => import('./modules/documents/documents.component'),
       },
       {
         path:'indicators',
-        loadComponent:()=> import('./business/indicators/indicators.component'),
+        loadComponent:()=> import('./modules/indicators/indicators.component'),
       },
       {
         path:'dashboard',
-        loadComponent:()=> import('./business/dashboard/dashboard.component'),
+        loadComponent:()=> import('./modules/dashboard/dashboard.component'),
       },
       {
         path:'template',
-        loadComponent:()=> import('./business/template/template.component'),
+        loadComponent:()=> import('./modules/template/template.component'),
       },
       {
         path:'',
@@ -42,6 +42,6 @@ export const routes: Routes = [
   },
   {
     path:'error-page',
-    loadComponent:()=> import('./shared/pages/error-page/error-page.component'),
+    loadComponent:()=> import('./core/authentication/error-page/error-page.component'),
   }
 ];

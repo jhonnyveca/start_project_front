@@ -2,9 +2,9 @@ import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import {Toolbar} from 'primeng/toolbar';
 import {Table, TableModule} from 'primeng/table';
 import {Button, ButtonDirective} from 'primeng/button';
-import {Document} from '../../../domain/document';
+import {Document} from '../../core/models/document';
 
-import {DocumentService} from '../../../service/document.service';
+import {DocumentService} from '../../core/service/document.service';
 import {DropdownModule} from 'primeng/dropdown';
 import {FormsModule} from '@angular/forms';
 import {IconField} from 'primeng/iconfield';

@@ -3,7 +3,7 @@ import {FormsModule} from '@angular/forms';
 import {ButtonDirective} from 'primeng/button';
 import {DropdownModule} from 'primeng/dropdown';
 import {InputText} from 'primeng/inputtext';
-import {User} from '../../../../domain/user';
+import {User} from '../../../core/models/user';
 import {MultiSelect} from 'primeng/multiselect';
 import {RouterLink} from '@angular/router';
 

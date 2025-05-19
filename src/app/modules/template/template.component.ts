@@ -6,8 +6,8 @@ import {InputIcon} from "primeng/inputicon";
 import {InputText} from "primeng/inputtext";
 import {Table, TableModule} from "primeng/table";
 
-import {Template} from '../../../domain/template';
-import {TemplateService} from '../../../service/template.service';
+import {Template} from '../../core/models/template';
+import {TemplateService} from '../../core/service/template.service';
 
 
 interface Column {
