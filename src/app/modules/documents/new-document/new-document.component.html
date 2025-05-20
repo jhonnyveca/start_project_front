@@ -1,0 +1,26 @@
+<div class="new-user-container">
+  <div class="user-form card">
+    <h2>Registrar documento</h2>
+    <form #documentForm="ngForm" (ngSubmit)="createUser()" class="form-grid">
+      <!-- Campo: Ruta de Repositorio -->
+      <div class="form-field">
+        <label for="documentRepository">Ruta de repositorio</label>
+        <p-select id="documentRepository" [options]="rutas" optionLabel="documentRepository" placeholder="Seleccione una opcion" ></p-select>
+      </div>
+
+      <!-- Campo: Importar archivos -->
+      <div class="form-field">
+        <label for="idProject">Importar archivo</label>
+        <input id="idProject" type="file" pInputText [(ngModel)]="document.idProject" name="idProject" required />
+      </div>
+
+      <!-- Botones -->
+      <div class="form-actions">
+        <button pButton type="submit" label="Subir" icon="pi pi-check" class="btn-new-user-register" [disabled]="documentForm.invalid"></button>
+        <button pButton type="button" label="Cancelar" icon="pi pi-times" class="btn-new-user-register" severity="secondary" routerLink="/documents"></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+

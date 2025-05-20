@@ -17,7 +17,7 @@
     <div class="form-field">
       <p-toolbar >
         <ng-template #start>
-          <button pButton  label="importar" icon="pi pi-download" class="btn-document-import"></button>
+          <button pButton  label="importar" icon="pi pi-download" class="btn-document-import" [routerLink]="['register']"></button>
           <button pButton  label="Indexacion" icon="pi pi-list-check"  class="btn-document-index"></button>
         </ng-template>
         <ng-template #end>
@@ -57,28 +57,29 @@
 
       <ng-template #header>
         <tr>
-          <th style="width: 3rem">
+          <th>
             <p-tableHeaderCheckbox />
           </th>
-          <th pSortableColumn="name" style="min-width:25rem">
+          <th pSortableColumn="name">
             Nombre de archivo
             <p-sortIcon field="name" />
           </th>
-          <th style="min-width: 10rem">Fecha de subida</th>
-          <th style="min-width: 10rem">Usuario</th>
-          <th style="min-width: 12rem">Acciones</th>
+          <th>Fecha de subida</th>
+          <th>Usuario</th>
+          <th>Acciones</th>
         </tr>
       </ng-template>
       <ng-template #body let-document>
         <tr>
-          <td style="width: 3rem">
+          <td>
             <p-tableCheckbox [value]="document" />
           </td>
-          <td style="min-width: 16rem">{{ document.documentName }}</td>
+          <td>{{ document.documentName }}</td>
           <td>{{ document.createDate}}</td>
           <td>{{ document.idUser }}</td>
           <td>
             <button pButton icon="pi pi-eye" class="btn-edit" [rounded]="true" [outlined]="true" (click)="editProduct(document)"></button>
+            <button pButton icon="pi pi-pencil" class="btn-edit" [rounded]="true" [outlined]="true" (click)="editProduct(document)"></button>
             <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProduct(document)" />
           </td>
         </tr>

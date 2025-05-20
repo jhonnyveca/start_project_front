@@ -10,6 +10,7 @@ import {FormsModule} from '@angular/forms';
 import {IconField} from 'primeng/iconfield';
 import {InputIcon} from 'primeng/inputicon';
 import {InputText} from 'primeng/inputtext';
+import {RouterLink} from '@angular/router';
 
 
 interface Column {
@@ -19,17 +20,18 @@ interface Column {
 }
 @Component({
   selector: 'app-documents',
-    imports: [
-        Toolbar,
-        TableModule,
-        Button,
-        DropdownModule,
-        FormsModule,
-        IconField,
-        InputIcon,
-        InputText,
-        ButtonDirective
-    ],
+  imports: [
+    Toolbar,
+    TableModule,
+    Button,
+    DropdownModule,
+    FormsModule,
+    IconField,
+    InputIcon,
+    InputText,
+    ButtonDirective,
+    RouterLink
+  ],
   templateUrl: './documents.component.html',
   standalone: true,
   styleUrl: './documents.component.scss'
@@ -98,5 +100,7 @@ export default class DocumentsComponent {
     { label: 'Fininsight', value: 'admin' },
     { label: 'Alivoice', value: 'editor' }
   ];
+
+
 
 }

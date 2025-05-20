@@ -22,6 +22,10 @@ export const routes: Routes = [
         loadComponent:() => import('./modules/documents/documents.component'),
       },
       {
+        path:'documents/register',
+        loadComponent:()=> import('./modules/documents/new-document/new-document.component'),
+      },
+      {
         path:'indicators',
         loadComponent:()=> import('./modules/indicators/indicators.component'),
       },
