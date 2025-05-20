@@ -21,6 +21,7 @@
         </div>
 
       </div>
+
       <p-panel header="Panel de filtros" [toggleable]="true" [collapsed]="false">
         <div class="panel-grid">
           <div class="form-field">
@@ -35,6 +36,17 @@
         <button pButton type="submit" label="Filtrar" icon="pi pi-filter" class="btn-filter"></button>
         <button pButton type="submit" label="Limpiar" icon="pi pi-filter-slash" class="btn-filter" severity="secondary"></button>
       </p-panel>
+
+      <div class="form-grid">
+        <div></div>
+        <p-toolbar class="toolbar-panel-export">
+          <ng-template #start>
+          </ng-template>
+          <ng-template #end>
+            <button pButton type="submit" label="Exportar Dashboard" icon="pi pi-file-pdf" class="btn-dashboard-export"></button>
+          </ng-template>
+        </p-toolbar>
+      </div>
 
       <div class="cards-container">
         <p-panel >

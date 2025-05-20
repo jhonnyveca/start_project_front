@@ -30,7 +30,8 @@ interface ChatSession {
     FormsModule,
     ButtonDirective,
     Panel,
-    Select
+    Select,
+    Toolbar
   ],
   templateUrl: './dashboard.component.html',
   standalone: true,
