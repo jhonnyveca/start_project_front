@@ -6,11 +6,11 @@ $user-bg: #F9F6F6;
 $sidebar-bg: #FAEFEF;
 $input-bg: #F9F6F6;
 $input-icon-color: #766F6F;
-$text-color: #3B8700;
-$text-color-dark: #3B8700;
-$text-title-color: #A30000;
-$accent-color: #3B8700;
-$border-color: #91D65C;
+$text-color: #000000;
+$text-color-dark: #000000;
+$text-title-color: #000000;
+$accent-color: #766F6F;
+$border-color: #000000;
 $card-btn-bg: #F9F6F6;
 $icon-color: #FFF;
 $text-secondary-color: #470000;
@@ -22,10 +22,11 @@ $bg-color-active: #F7FAEF;
 .chat-container {
   display: flex;
   height: calc(100vh - 60px);
-  background-color: $dark-bg;
+  background-color: #FFFFFF !important;
   color: $text-color;
   flex-direction: row;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
 
 
   &.sidebar-collapsed {
@@ -50,7 +51,7 @@ $bg-color-active: #F7FAEF;
     padding: 1.3rem;
     width: 40px;
     height: 40px;
-    background-color: $accent-color;
+    background-color: #E62020;
     border: none;
     border-radius: 50%;
     color: $white-color;
@@ -63,7 +64,7 @@ $bg-color-active: #F7FAEF;
     transition: all 0.3s ease;
 
     &:hover {
-      background-color: lighten($accent-color, 5%);
+      background-color: lighten(#E62020, 5%);
       transform: scale(1.1);
     }
 
@@ -74,13 +75,16 @@ $bg-color-active: #F7FAEF;
 
   .chat-sidebar {
     width: 260px;
-    background-color: $sidebar-bg;
+    background-color: #FFFFFF;
     padding: 0.5rem;
     overflow-y: auto;
     position: relative;
     transition: width 0.3s ease;
+    color: #000000;
     display: flex;
     flex-direction: column;
+    z-index: 10;
+    box-shadow: -1px 2px 2px rgba(0, 0, 0, 0.2);
 
     &.collapsed {
       width: 0;
@@ -88,6 +92,8 @@ $bg-color-active: #F7FAEF;
       overflow: hidden;
       border: none;
       transition: width 0.3s ease;
+
+
     }
 
     .collapse-toggle-btn {
@@ -113,8 +119,9 @@ $bg-color-active: #F7FAEF;
     .new-chat-btn {
       width: calc(100% - 4rem);
       padding: 0.5rem;
-      background-color: $text-color;
-      border: 1px solid $text-color;
+      font-size: 14px !important;
+      background-color: #E62020;
+      border: 1px solid #E62020;
       color: $white-color;
       text-align: left;
       display: flex;
@@ -126,18 +133,20 @@ $bg-color-active: #F7FAEF;
       transition: background-color 0.2s ease;
 
       &:hover {
-        background-color: lighten($text-color, 5%);
+        background-color: #A30000 !important;
+        border-color: #A30000 !important;
       }
 
       .label {
-        font-size: 0.9rem;
+        font-size: 14px;
       }
     }
 
     .chat-history-title {
       font-size: 0.8rem;
       padding: 0.5rem 1rem;
-      color: $text-secondary-color;
+      color: #000000 !important;
+      font-weight: 600 !important;
       margin-top: 0.5rem;
     }
 
@@ -146,19 +155,23 @@ $bg-color-active: #F7FAEF;
       align-items: center;
       gap: 12px;
       cursor: pointer;
-      padding: 0.75rem 1rem;
+      padding: 0.5rem 1rem;
       border-radius: 6px;
-      margin: 0.25rem 0.5rem;
+      margin: 0 0.5rem;
       font-size: 0.9rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
 
       &:hover {
-        background-color: $bg-hover;
+        color: #E62020;
+        i{
+          color: #E62020;
+        }
       }
 
       i {
+        color:#000000;
         font-size: 1rem;
       }
 
@@ -172,7 +185,10 @@ $bg-color-active: #F7FAEF;
       }
 
       &.active {
-        background-color: $bg-color-active;
+        color: #E62020;
+        i{
+          color: #E62020;
+        }
       }
     }
   }
@@ -184,7 +200,7 @@ $bg-color-active: #F7FAEF;
     position: relative;
     overflow: hidden;
     flex-grow: 1;
-    background-color: $dark-bg;
+    background-color: transparent;
     width: calc(100% - 260px);
 
 
@@ -193,13 +209,12 @@ $bg-color-active: #F7FAEF;
       overflow-y: auto;
 
       .chat-messages {
-        min-height: calc(100% - 100px);
+        min-height: calc(100% - 140px);
         display: flex;
         flex-direction: column;
 
         .chat-message {
           padding: 1rem 5rem;
-          border-bottom: 1px solid $bg-hover;
 
           &:last-child {
             border-bottom: none;
@@ -223,12 +238,12 @@ $bg-color-active: #F7FAEF;
               flex-shrink: 0;
 
               &.user {
-                background-color: $input-icon-color;
-                margin: 0.5rem 0;
+                background-color: #6C6C6C;
+                margin: 0;
               }
 
               &.bot {
-                background-color: $accent-color;
+                background-color: #E62020;
                 color: $icon-color;
               }
 
@@ -254,13 +269,13 @@ $bg-color-active: #F7FAEF;
           }
 
           &.user {
-            background-color: $user-bg;
+            background-color: transparent;
 
 
             .message-content {
               display: flex;
               justify-content: flex-end;
-              margin-right: 3.2rem;
+              margin-right: 5%;
               flex-direction: row-reverse; // Ícono a la derecha, texto a la izquierda
               align-items: flex-start;
               max-width: min(80%, 700px); // Límite máximo pero flexible
@@ -276,9 +291,9 @@ $bg-color-active: #F7FAEF;
                 margin-left: 0.5rem;
               }
               .text-content {
-                background-color: $white-color;
+                background-color: #FAF7F7;
                 border-radius: 12px 0 12px 12px; // Punta hacia la izquierda
-                padding: 0.75rem 1rem;
+                padding: 0.35rem 1rem;
                 margin-right: 3rem; // Espacio para el ícono
                 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
                 width: fit-content; // Ajuste al texto
@@ -295,12 +310,12 @@ $bg-color-active: #F7FAEF;
           }
 
           &.bot {
-            background-color: $light-bg;
+            background-color: transparent;
           }
         }
 
         .empty-state {
-          min-height: calc(100vh - 200px);
+          min-height: calc(100vh - 140px);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -358,24 +373,29 @@ $bg-color-active: #F7FAEF;
     .floating-input-wrapper {
       position: sticky;
       bottom: 0;
-      background-color: $dark-bg;
-      z-index: 10;
+      background-color: #FFFFFF;
+      z-index: 9;
       padding-bottom: 1rem;
 
       .chat-input-container {
-        max-width: 800px;
+        max-width: 900px;
         margin: 0 auto;
         padding: 0 1rem;
 
         &:not(.has-messages) {
+          max-width: 600px;
           position: absolute;
-          bottom: 15vh;
+          bottom: 40vh;
           left: 0;
           right: 0;
           background: transparent;
 
+         /* .chat-input-container{
+            max-width: 1000px;
+          }*/
+
           .input-wrapper {
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+           /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);*/
           }
         }
 
@@ -387,19 +407,19 @@ $bg-color-active: #F7FAEF;
 
           .chat-input {
             flex-grow: 1;
-            padding: 0.75rem 3.5rem 0.75rem 1.5rem;
+            padding: 0 3.5rem 2rem 1.5rem;
             background-color: $input-bg;
-            border: 1px solid $border-color;
+            border: 0.1px solid #E0DCDC;
             border-radius: 25px;
             color: $text-color-dark;
-            font-size: 1rem;
+            font-size: 14px;
             outline: none;
-            min-height: 50px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            min-height: 90px;
+            /*box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);*/
 
             &:focus {
-              border-color: $accent-color;
-              box-shadow: 0 0 0 2px rgba(16, 163, 127, 0.3);
+              border-color: #3B8700;
+          /*    box-shadow: 0 0 0 2px rgba(16, 163, 127, 0.3);*/
             }
 
             &::placeholder {
@@ -409,7 +429,8 @@ $bg-color-active: #F7FAEF;
 
           .btn-send {
             position: absolute;
-            right: 0.2rem;
+            right: 0;
+            top:2.2rem;
             background: transparent;
             border: none;
             color: $input-icon-color;
@@ -418,7 +439,7 @@ $bg-color-active: #F7FAEF;
 
             .pi {
               font-size: 2.4rem;
-              background-color: $text-color-dark;
+              background-color: #3B8700;
               color: white;
               border-radius: 50%;
             }
@@ -426,6 +447,9 @@ $bg-color-active: #F7FAEF;
             &:disabled {
               opacity: 0.5;
               cursor: not-allowed;
+              .pi{
+                background-color: #766F6F;
+              }
             }
           }
         }
@@ -448,12 +472,12 @@ $bg-color-active: #F7FAEF;
         transition: all 0.2s ease;
 
         &:hover {
-          color: $text-color-dark !important;
+          color: #E62020 !important;
           transform: scale(1.2);
         }
 
         &.p-rating-icon-active {
-          color: $text-color-dark;
+          color: #E62020;
         }
       }
     }
@@ -479,7 +503,7 @@ $bg-color-active: #F7FAEF;
       width: 250px;
       z-index: 10;
       transition: transform 0.3s ease;
-      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+      box-shadow: 2px 10px rgba(0, 0, 0, 0.8);
     }
 
     .chat-window {
@@ -537,7 +561,7 @@ $bg-color-active: #F7FAEF;
       padding: 0 0.5rem !important;
 
       &:not(.has-messages) {
-        bottom: 12vh !important;
+        bottom: 35vh !important;
       }
     }
   }

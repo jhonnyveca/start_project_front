@@ -55,20 +55,19 @@
 
 .btn-new-user-register{
   background-color: #3B8700;
-  border: 1px solid #3B8700;
+  border: none;
   color: white;
 
   &:hover {
     background-color: darken(#3B8700, 5%) !important;
-    border-color: darken(#3B8700, 5%) !important;
+    border: none !important;
   }
-  &.p-button-secondary {
+  &:disabled {
     background-color: #6c757d;
-    border-color: #6c757d;
-
+    cursor: not-allowed;
     &:hover {
-      background-color: #5a6268 !important;
-      border-color: #545b62 !important;
+      background-color: #6c757d !important;
+      border-color: #6c757d !important;
     }
   }
 }

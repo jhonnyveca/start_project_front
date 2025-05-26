@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
-import {Button, ButtonDirective} from 'primeng/button';
+import {ButtonDirective} from 'primeng/button';
 import {Toolbar} from 'primeng/toolbar';
 import {IconField} from "primeng/iconfield";
 import {InputIcon} from "primeng/inputicon";
@@ -19,7 +19,6 @@ interface Column {
 @Component({
   selector: 'app-template',
   imports: [
-    Button,
     Toolbar,
     IconField,
     InputIcon,

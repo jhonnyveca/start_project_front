@@ -31,9 +31,9 @@
           <!-- Estado inicial cuando no hay mensajes -->
           <div class="empty-state" *ngIf="currentChat.messages.length === 0">
             <div class="empty-state-content">
-              <h1>Bienvenido(a) al Asistente Inteligente</h1>
+             <!-- <h1>Bienvenido(a) al Asistente Inteligente</h1>-->
               <h4>¿En qué puedo ayudarte?</h4>
-              <div class="suggestion-buttons">
+              <!--<div class="suggestion-buttons">
                 <button class="suggestion-btn" (click)="suggestQuestion('¿Cómo funciona el Asistente Inteligente?')">
                   "¿Cómo funciona el Asistente Inteligente?"
                 </button>
@@ -43,7 +43,7 @@
                 <button class="suggestion-btn" (click)="suggestQuestion('Explica la teoría de la relatividad')">
                   "Explica la teoría de la relatividad"
                 </button>
-              </div>
+              </div>-->
             </div>
           </div>
         </div>
@@ -54,7 +54,7 @@
               <input type="text"
                      [(ngModel)]="userInput"
                      (keydown.enter)="sendMessage()"
-                     placeholder="Envía un mensaje..."
+                     placeholder="Pregunta lo que quieras"
                      class="chat-input" />
               <button class="btn-send"
                       [disabled]="!userInput.trim() && !isGenerating"

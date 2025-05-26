@@ -7,7 +7,7 @@
       <div class="form-grid">
         <div class="form-field">
           <label >
-            Dashboard
+            <i class="pi pi-angle-left" style="font-size: 14px; color: #E62020;"></i><span style="margin-left: 8px; ">Dashboard</span>
           </label>
         </div>
         <div class="form-field">
@@ -25,27 +25,33 @@
       <p-panel header="Panel de filtros" [toggleable]="true" [collapsed]="false">
         <div class="panel-grid">
           <div class="form-field">
-            <label class="panel-subtitle">Categoria</label>
-            <p-select [options]="category" optionLabel="name" placeholder="Selecciona una opcion" class="mr-2" />
+            <p-floatlabel variant="on">
+              <p-select [(ngModel)]="value1" inputId="on_category" [options]="category" optionLabel="name"  class="input-select" />
+              <label for="on_category" >Categoria</label>
+            </p-floatlabel>
           </div>
           <div class="form-field">
-            <label class="panel-subtitle">Año</label>
-            <p-select [options]="anios" optionLabel="name" placeholder="Selecciona una opcion" class="mr-2" />
+            <p-floatlabel  variant="on">
+              <p-select [(ngModel)]="value2"  inputId="on_anio" [options]="anios" optionLabel="name"  class="input-select" />
+              <label for="on_anio">Año</label>
+            </p-floatlabel>
           </div>
         </div>
         <button pButton type="submit" label="Filtrar" icon="pi pi-filter" class="btn-filter"></button>
-        <button pButton type="submit" label="Limpiar" icon="pi pi-filter-slash" class="btn-filter" severity="secondary"></button>
+        <button pButton type="submit" label="Limpiar" icon="pi pi-filter-slash" class="btn-clean"  severity="secondary"></button>
       </p-panel>
 
       <div class="form-grid">
         <div></div>
         <p-toolbar class="toolbar-panel-export">
           <ng-template #start>
+
           </ng-template>
           <ng-template #end>
-            <button pButton type="submit" label="Exportar Dashboard" icon="pi pi-file-pdf" class="btn-dashboard-export"></button>
+            <button pButton type="submit" label="Exportar Dashboard" icon="pi pi-file-pdf" [outlined]="true" class="btn-dashboard-export"></button>
           </ng-template>
         </p-toolbar>
+
       </div>
 
       <div class="cards-container">
@@ -75,7 +81,7 @@
       <i class="material-symbols-outlined">dashboard_customize</i>
       <span class="label">Nuevo dashboard</span>
     </button>
-    <div class="dashboard-history-title">Lista de dashboards</div>
+    <div class="dashboard-history-title" >Lista de dashboards</div>
     <div *ngFor="let dashboard of chatHistory"
          (click)="loadChat(dashboard)"
          [class.active]="dashboard.id === currentChat.id"

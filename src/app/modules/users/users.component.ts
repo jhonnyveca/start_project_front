@@ -27,7 +27,6 @@ interface ExportColumn {
     TableModule,
     FormsModule,
     Toolbar,
-    Button,
     InputText,
     IconField,
     InputIcon,

@@ -18,11 +18,11 @@ export const routes: Routes = [
         loadComponent:()=> import('./modules/users/new-user/new-user.component'),
       },
       {
-        path:'documents',
+        path:'repositories',
         loadComponent:() => import('./modules/documents/documents.component'),
       },
       {
-        path:'documents/register',
+        path:'repositories/register',
         loadComponent:()=> import('./modules/documents/new-document/new-document.component'),
       },
       {

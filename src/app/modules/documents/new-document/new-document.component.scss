@@ -23,7 +23,7 @@
 
   .form-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
     gap: 1.5rem;
 
   }
@@ -53,28 +53,82 @@
   }
 }
 
-.btn-new-user-register{
+
+::ng-deep .p-select {
+  width: 100%;
+}
+
+/* Estilos para el drag & drop simplificado */
+.simple-drag-drop {
+  position: relative;
+  cursor: pointer;
+}
+
+.file-input {
+  display: none;
+}
+
+.drop-area {
+  border: 2px dashed #ccc;
+  border-radius: 6px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s;
+  position: relative;
+  background-color: #f8f9fa;
+
+  &.dragover {
+    border-color: #3B8700;
+    background-color: #e9ecef;
+  }
+
+  i {
+    font-size: 2.5rem;
+    color: #3B8700;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin: 0;
+    color: #495057;
+    word-break: break-word;
+  }
+
+  .file-size {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+}
+
+.remove-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 2rem;
+  height: 2rem;
+}
+
+.btn-submit {
   background-color: #3B8700;
-  border: 1px solid #3B8700;
+  border: none;
   color: white;
 
   &:hover {
     background-color: darken(#3B8700, 5%) !important;
-    border-color: darken(#3B8700, 5%) !important;
+    border: none !important;
   }
-  &.p-button-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
 
+  &:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
     &:hover {
-      background-color: #5a6268 !important;
-      border-color: #545b62 !important;
+      background-color: #6c757d !important;
+      border-color: #6c757d !important;
     }
   }
 }
-::ng-deep .p-select {
-  width: 100%;
-}
+
 
 @media (max-width: 768px) {
   .new-user-container{

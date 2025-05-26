@@ -9,6 +9,7 @@ import { ButtonDirective} from 'primeng/button';
 import {Panel} from 'primeng/panel';
 import {Select} from 'primeng/select';
 import {Toolbar} from 'primeng/toolbar';
+import {FloatLabel} from 'primeng/floatlabel';
 
 interface ChatMessage {
   role: 'user' | 'bot';
@@ -21,6 +22,14 @@ interface ChatSession {
   title: string;
   messages: ChatMessage[];
 }
+interface Anio {
+  name: string;
+  code: string;
+}
+interface Category {
+  name: string;
+  code: string;
+}
 @Component({
   selector: 'app-dashboard',
   imports: [
@@ -31,7 +40,8 @@ interface ChatSession {
     ButtonDirective,
     Panel,
     Select,
-    Toolbar
+    Toolbar,
+    FloatLabel
   ],
   templateUrl: './dashboard.component.html',
   standalone: true,
@@ -94,16 +104,10 @@ export default class DashboardComponent implements OnInit {
     chat.editing = true;
   }
 
-  anios = [
-    { name: '2025', code: '1' },
-    { name: '2024', code: '2' },
-    { name: '2023', code: '3' }
-  ];
-  category = [
-    { name: 'A', code: '1' },
-    { name: 'B', code: '2' },
-    { name: 'C', code: '3' }
-  ];
+  anios : Anio[] | undefined
+  category : Category[] | undefined
+  value1: Anio | undefined;
+  value2: Category | undefined;
 
   /// Graficos
   @ViewChild('chart1', {static: true}) chart1Ref!: ElementRef;
@@ -129,6 +133,16 @@ export default class DashboardComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.anios  = [
+      { name: '2025', code: '1' },
+      { name: '2024', code: '2' },
+      { name: '2023', code: '3' }
+    ];
+    this.category = [
+      { name: 'A', code: '1' },
+      { name: 'B', code: '2' },
+      { name: 'C', code: '3' }
+    ];
     this.updateSidebarForScreenSize();
     const data1 = [
       {date: '2024-01-01', value: 10},

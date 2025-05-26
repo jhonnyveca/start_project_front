@@ -13,7 +13,8 @@
   background-color: #FFFFFF;
   justify-content: flex-start;
   transition: padding-left 0.3s ease;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+
 
 
   &.with-sidebar {
@@ -47,7 +48,7 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   margin-left: 20px;
-  color: #ef3340;
+  color: #000000;
 }
 .sidebar-desktop {
   position: fixed;
@@ -55,12 +56,16 @@
   left: 0;
   width: 250px;
   height: 100vh;
-  background-color: #A30000;
+  background-color: #FFFFFF;
   padding: 0.5rem;
   overflow-y: auto;
   transition: width 0.3s ease, transform 0.3s ease;
   z-index: 100;
   transform: translateX(-100%);
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
 
 
   &.visible {
@@ -86,7 +91,7 @@
     z-index: 110 !important;
     background: none ;
     border: none ;
-    color: white;
+    color: #000000;
     font-size: 1.2rem;
     left: 180px ;
     margin-top: 0.5rem;
@@ -110,11 +115,10 @@
     padding: 0;
 
     li.group-title {
-      font-size: 0.75rem;
-      text-transform: uppercase;
+      font-size: 14px;
       font-weight: 600;
       padding: 0.5rem 1rem;
-      color: white;
+      color: #000000;
       margin-top: 0.5rem;
 
       &:hover {
@@ -134,22 +138,22 @@
       transition: background-color 0.2s ease;
 
       &:hover {
-        background-color: #E62020;
+        color: #000000;
       }
       .module-title {
         display: flex;
         align-items: center;
         gap: 1rem;
-        color: white;
+        color: #000000;
         font-size: 14px;
-        font-weight: 500;
+
       }
 
       i {
-        font-size: 1.2rem;
+        font-size: 16px;
         width: 24px;
         text-align: center;
-        margin-right: 0.5rem;
+        margin-right: 0;
       }
       span {
         transition: opacity 0.2s ease;
@@ -159,7 +163,11 @@
       cursor: pointer;
 
       &.active {
-        background-color: #E62020;
+        .module-title{
+          color: #E62020 !important;
+          font-weight: 600;
+        }
+
       }
     }
   }
@@ -189,9 +197,10 @@
 }
 .main-content {
   margin-top: 60px;
-/*  padding: 1rem;*/
   margin-left: 250px;
   transition: margin-left 0.3s ease;
+  overflow-y: auto;
+
 
   &.with-sidebar {
     margin-left: 250px;
@@ -218,10 +227,9 @@
   }
 
   .user-avatar {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    border: 2px solid #78be21;
   }
   .pi.pi-user{
     width: 32px;
@@ -229,13 +237,13 @@
     border-radius: 50%;
     text-align: center;
     align-content: center;
-    border: 2px solid #3B8700;
-    color: #3B8700;
+    border: 1px solid #000000;
+    color: #000000;
   }
 
   .user-name {
-    color: #3B8700;
-    font-weight: 500;
+    color: #000000;
+    font-weight: 400;
 
   }
 
@@ -244,6 +252,72 @@
     color: #666;
   }
 }
+/* Estilos para el toggle de tema en el sidebar */
+.theme-toggle-item {
+  margin-top: auto !important; /* Empuja hacia abajo */
+/*  border-top: 1px solid rgba(255, 255, 255, 0.1);*/
+
+  &:hover {
+    background-color: transparent !important;
+  }
+
+  .module-title {
+    i {
+      color: white;
+      transition: all 0.3s ease;
+    }
+  }
+}
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden !important;
+  width: 100%;
+}
+
+/* Contenedor del toggle de tema */
+.theme-toggle-container {
+  padding: 1rem 0.65rem;
+  border-top: none;
+  margin-top: auto; /* Esto lo empuja hacia abajo */
+
+  .theme-toggle-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    color: #000000;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 6px;
+    transition: width 0.3s ease;
+
+    i {
+      font-size: 1.2rem;
+      min-width: 24px;
+      text-align: center;
+    }
+  }
+  /* Cuando está colapsado */
+  &.collapsed {
+    .theme-toggle-container {
+      padding: 0;
+      border-top: none;
+      display: flex;
+      justify-content: center;
+
+      .theme-toggle-item {
+        justify-content: center;
+        padding: 0;
+
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+
 .menu-button.responsive-only {
   display: none;
   background: none;
@@ -274,7 +348,7 @@
     }
   }
   li.clickable.active{
-    margin: 0 0.5rem;
+    /*margin: 0 0.5rem;*/
   }
   .menu-button {
     margin-left: 0 !important;
@@ -304,6 +378,12 @@
     .user-name,
     .user-icon {
       display: none;
+    }
+  }
+
+  .dark-theme {
+    .app-toolbar {
+      background-color: #1a1a1a !important;
     }
   }
 }

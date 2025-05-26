@@ -1,18 +1,20 @@
 .indicator-container{
-  position: relative;
-  padding: 0 1rem;
-  width: 100%;
+  flex-grow: 1;
+  overflow-y: auto;
+  transition: margin-right 0.3s ease;
+  height: calc(100vh - 60px);
+
+
+  .indicator-content{
+    max-width: 100%;
+    margin: 0 auto;
+  }
 }
 .card-indicator {
-  background-color: white;
-  padding: 1rem;
-  border-radius: 6px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background-color: transparent;
+  padding: 1rem 1.3rem;
+}
 
-}
-.btn-edit{
-  margin-right: 0.5rem ;
-}
 ::ng-deep .p-toolbar {
   border: 0!important;
   padding: 0!important;
@@ -20,14 +22,14 @@
   background-color: transparent!important;
 }
 ::ng-deep .p-panel {
-  margin: 2rem 1rem 0;
   background-color: white;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 10px !important;
 
   .p-panel-header {
     background-color: #f8f9fa;
     border-bottom: 1px solid #e9ecef;
-    color: #A30000;
+    border-radius: 10px 10px 1px 1px!important;
+    color: #000000 !important;
     font-weight: 600;
   }
 
@@ -45,27 +47,27 @@
   font-weight: 600;
   font-size: 16px !important;
   padding: 0.3rem 0;
-  color: #334155;
+  color: #000000 !important;
 }
 .btn-filter{
-  margin: 1rem 0.1rem;
-  background-color: #3B8700;
-  border: 1px solid #3B8700;
+  font-size: 14px !important;
+  margin-top: 2rem ;
+  margin-right: 0.5rem;
+  background-color: #E62020;
+  border: 1px solid #E62020;
   color: white;
 
-  &:hover {
-    background-color: darken(#3B8700, 5%) !important;
-    border-color: darken(#3B8700, 5%) !important;
-  }
-  &.p-button-secondary {
-    background-color: #6c757d;
-    border-color: #6c757d;
 
-    &:hover {
-      background-color: #5a6268 !important;
-      border-color: #545b62 !important;
-    }
+  &:hover {
+    background-color: #A30000 !important;
+    border-color: #A30000 !important;
   }
+}
+.btn-clean{
+  font-size: 14px !important;
+}
+.input-select{
+  width: 100%;
 }
 .form-grid {
   display: grid;
@@ -92,24 +94,28 @@
   padding-top: 1rem;
   label {
     font-weight: 500;
-    font-size: 30px;
-    color: #A30000;
+    font-size: 16px;
+    color: #000000;
   }
   input, p-dropdown {
     width: 100%;
   }
 }
-.panel-field {
-  display: flex;
-  flex-direction: column;
-  label {
-    font-weight: 600;
-    font-size: 16px;
-    color: #A30000;
-    margin-bottom: 0.5rem;
-  }
-  input, p-dropdown {
-    width: 100%;
+.panel-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-weight: 600;
+      font-size: 14px !important;
+      color: #000;
+      margin-bottom: 0.5rem;
+    }
   }
 }
 
@@ -130,16 +136,18 @@
 }
 
 h4{
-  color: #A30000;
+  color: #000000;
 }
 .btn-report{
- margin: 0 1rem;
-  border: 1px solid #3B8700;
-  color: #3B8700;
+  font-size: 14px !important;
+ margin: 0 0.5rem;
+  background-color: #FFFFFF;
+  border: none;
+  color: #E62020;
   &:hover {
-    color: white;
-    background-color: darken(#3B8700, 5%) !important;
-    border-color: darken(#3B8700, 5%) !important;
+    color: #E62020;
+    background-color: #FFFFFF;
+    border: none;
   }
 }
 
@@ -150,11 +158,10 @@ h4{
   background-color: white;
   border-radius: 6px;
   margin-top: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
 
   .p-panel-header {
-    background-color: #f8f9fa;
+    background-color: #FFFFFF;
     border-bottom: 1px solid #e9ecef;
     color: #A30000;
 
@@ -171,9 +178,9 @@ h4{
     padding: 0 0.1rem;
     width: 100%;
   }
+
   .form-grid {
     grid-template-columns: repeat(1, 1fr);
-    padding: 2.5rem 1rem 1rem 1.5rem;
 
   }
   .indicator-grid {
@@ -195,8 +202,8 @@ h4{
     display: flex;
   }
   .card-indicator {
-    margin: 0;
-    padding: 0.5rem;
+    margin: 0 !important;
+    padding: 0 !important;
   }
   .search {
     display: grid;

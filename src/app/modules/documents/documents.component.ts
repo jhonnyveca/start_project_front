@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {Toolbar} from 'primeng/toolbar';
 import {Table, TableModule} from 'primeng/table';
 import {Button, ButtonDirective} from 'primeng/button';
@@ -11,6 +11,10 @@ import {IconField} from 'primeng/iconfield';
 import {InputIcon} from 'primeng/inputicon';
 import {InputText} from 'primeng/inputtext';
 import {RouterLink} from '@angular/router';
+import {TreeTableModule} from 'primeng/treetable';
+import {NgForOf, NgIf} from '@angular/common';
+import {TreeNode} from 'primeng/api';
+import {RepositoriesService} from '../../core/service/repositories.service';
 
 
 interface Column {
@@ -23,28 +27,21 @@ interface Column {
   imports: [
     Toolbar,
     TableModule,
-    Button,
     DropdownModule,
     FormsModule,
-    IconField,
-    InputIcon,
-    InputText,
     ButtonDirective,
-    RouterLink
+    RouterLink,
+    TreeTableModule,
+    NgForOf,
+    NgIf
   ],
   templateUrl: './documents.component.html',
   standalone: true,
   styleUrl: './documents.component.scss'
 })
-export default class DocumentsComponent {
+export default class DocumentsComponent implements OnInit{
 
   documents!: Document[];
-
-  document!: Document;
-
-  selectedDocuments!: Document[] | null;
-
-  submitted: boolean = false;
 
   statuses!: any[];
 
@@ -52,20 +49,44 @@ export default class DocumentsComponent {
 
   cols!: Column[];
 
+  files!: TreeNode[];
+
+  selectionKeys = {};
 
   constructor(
     private documentService: DocumentService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private repositoriesService: RepositoriesService
   ) {}
 
 
   ngOnInit() {
     this.loadDemoData();
-  }
+    this.repositoriesService.getTreeTableNodes().then((files) => (this.files = files));
+    this.cols = [
+      { field: 'name', header: 'Name' },
+      { field: 'size', header: 'Size' },
+      { field: 'type', header: 'Type' }
+    ];
 
-  onGlobalFilter(event: Event) {
-    const input = event.target as HTMLInputElement;
-    this.dt?.filterGlobal(input.value, 'contains');
+    this.selectionKeys = {
+      '0': {
+        partialChecked: true
+      },
+      '0-0': {
+        partialChecked: false,
+        checked: true
+      },
+      '0-0-0': {
+        checked: true
+      },
+      '0-0-1': {
+        checked: true
+      },
+      '0-0-2': {
+        checked: true
+      }
+    };
   }
 
   loadDemoData() {
@@ -81,26 +102,6 @@ export default class DocumentsComponent {
     ];
 
   }
-
-  openNew() {
-    this.document = {};
-    this.submitted = false;
-  }
-
-  editProduct(document: Document) {
-    this.document = { ...document };
-  }
-
-
-  deleteProduct(document: Document) {
-
-  }
-
-  apps = [
-    { label: 'Fininsight', value: 'admin' },
-    { label: 'Alivoice', value: 'editor' }
-  ];
-
 
 
 }

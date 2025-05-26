@@ -162,7 +162,7 @@ export default class ChatBoxComponent implements OnInit, OnDestroy {
         this.stopGeneration();
         botMessage.done = true;
       }
-    }, 30);
+    }, 5);
 
     // Manejar cancelación
     this.cancelGeneration.pipe(take(1)).subscribe(() => {

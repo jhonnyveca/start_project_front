@@ -1,8 +1,10 @@
+
 <div class="user-container">
+  <div class="user-content">
     <div class="form-grid">
       <div class="form-field">
         <label>
-          Administracion de Usuarios
+          <i class="pi pi-angle-left" style="font-size: 14px; color: #E62020;"></i><span style="margin-left: 8px; ">Usuarios</span>
         </label>
       </div>
       <div class="form-field">
@@ -10,14 +12,14 @@
           <ng-template #start>
           </ng-template>
           <ng-template #end>
-            <span style="margin-right: 4px; color: #E62020;">Administracion</span>/ Usuarios
+
           </ng-template>
         </p-toolbar>
       </div>
       <div class="form-field">
         <p-toolbar>
           <ng-template #start>
-            <button pButton label="Registrar" icon="pi pi-plus" class="btn-user-register" [routerLink]="['register']"></button>
+
           </ng-template>
           <ng-template #end>
           </ng-template>
@@ -25,11 +27,12 @@
       </div>
     </div>
     <div class="card">
+      <button pButton label="Registrar" icon="pi pi-plus" class="btn-user-register" [routerLink]="['register']"></button>
       <p-table
         #dt
         [value]="users"
-        [rows]="7"
-        [rowsPerPageOptions]="[7, 10, 25]"
+        [rows]="5"
+        [rowsPerPageOptions]="[5, 10, 25]"
         [columns]="cols"
         [paginator]="true"
         [globalFilterFields]="['id', 'name', 'email', 'role', 'appUser']"
@@ -51,24 +54,22 @@
             </p-iconfield>
           </div>
         </ng-template>
-        <ng-template #header>
+        <ng-template #header >
           <tr>
             <!--<th style="width: 3rem">
               <p-tableHeaderCheckbox />
             </th>-->
-            <th>Codigo</th>
-            <th pSortableColumn="name">
+            <th >Codigo</th>
+            <th >
               Nombre
-              <p-sortIcon field="name" />
             </th>
             <th>Correo</th>
-            <th pSortableColumn="role" >
+            <th  >
               Tipo de usuario
-              <p-sortIcon field="role" />
+
             </th>
-            <th pSortableColumn="appUser" >
+            <th  >
               Aplicacion
-              <p-sortIcon field="appUser" />
             </th>
             <th >Acciones</th>
           </tr>
@@ -84,15 +85,15 @@
             <td>{{ user.role }}</td>
             <td>{{ user.appUser}}</td>
             <td>
-              <button pButton icon="pi pi-pencil" class="btn-edit" [rounded]="true" [outlined]="true" (click)="editProduct(user)"></button>
-              <p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" (click)="deleteProduct(user)" />
+              <button pButton icon="pi pi-pencil" class="btn-edit" [rounded]="true" (click)="editProduct(user)"></button>
+              <button pButton icon="pi pi-trash" severity="danger" class="btn-delete" [rounded]="true" [outlined]="true" (click)="deleteProduct(user)"></button>
             </td>
           </tr>
         </ng-template>
       </p-table>
 
     </div>
-
+  </div>
 </div>
 
 
