@@ -1,0 +1,10 @@
+{
+  "/api": {
+    "target": "https://assistantapi-840731636900.us-central1.run.app",
+    "secure": false,
+    "changeOrigin": true,
+    "pathRewrite": {
+      "^/api": ""
+    }
+  }
+}

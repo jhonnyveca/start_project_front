@@ -1,9 +1,11 @@
-import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 
 import {NgClass, NgForOf, NgIf} from '@angular/common';
 import {Subject, take} from 'rxjs';
 import {Rating} from 'primeng/rating';
+import {ChatService} from '../../core/service/chat.service';
+import vegaEmbed from 'vega-embed';
 
 
 interface ChatMessage {
@@ -33,12 +35,22 @@ interface ChatSession {
   standalone: true,
   styleUrl: './chat-box.component.scss'
 })
-export default class ChatBoxComponent implements OnInit, OnDestroy {
+export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestroy {
+  @ViewChild('vegaGraph', { static: true }) vegaGraph!: ElementRef;
+
   isSidebarCollapsed: boolean = false;
   userInput: string = '';
   isGenerating = false;
   private cancelGeneration = new Subject<void>();
   private generationInterval?: any;
+
+  constructor(private chatService: ChatService) {}
+
+  ngAfterViewInit(): void {
+
+    vegaEmbed(this.vegaGraph.nativeElement, {}, { actions: false })
+      .catch(err => console.error('Error al renderizar Vega:', err));
+    }
 
 
   chatHistory: ChatSession[] = [
@@ -55,6 +67,7 @@ export default class ChatBoxComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.updateSidebarForScreenSize();
     this.initializeNewChat();
+
   }
   @HostListener('window:resize')
   onResize() {
@@ -114,8 +127,87 @@ export default class ChatBoxComponent implements OnInit, OnDestroy {
 
   }
 
+  rederGraph(graphChat:any) {
+
+    if (graphChat?.transform) {
+      delete graphChat.transform;
+    }
+    graphChat.width = 200;
+    graphChat.height = 200;
+
+    if (graphChat) {
+      vegaEmbed(this.vegaGraph.nativeElement, graphChat, { actions: false })
+        .catch(err => console.error('Error al renderizar Vega:', err));
+    }
+  }
   sendMessage() {
+
+    let mensaje : string = ''
     if (!this.userInput.trim()) return;
+    this.chatService.sendMenssage({
+      id_project:'12',
+      id_chat: '1',
+      id_session:'1',
+      id_channel:'1',
+      id_user:'erodriguez',
+      message: this.userInput.trim().toString(),
+      index_message: 1
+    }).subscribe(
+      (res: any) => {
+        console.log('Respuesta del servidor:', res.message);
+        mensaje = res.message;
+        //this.responses = res.response;
+        const fullResponse = mensaje;
+        let currentPosition = 0;
+
+        // Cancelar cualquier generación previa
+        this.cancelGeneration.next();
+
+        // Añadir mensaje vacío del bot
+        const botMessage: ChatMessage = {
+          role: 'bot',
+          content: '' ,
+          rating: null,
+          done: false
+        };
+        console.log('Bot Message: ', botMessage);
+        this.currentChat.messages.push(botMessage);
+
+
+        // Simular generación con efecto de escritura
+        this.generationInterval = setInterval(() => {
+          if (currentPosition < fullResponse.length) {
+            botMessage.content += fullResponse[currentPosition];
+            currentPosition++;
+            this.scrollToBottom();
+          } else {
+            this.stopGeneration();
+            botMessage.done = true;
+          }
+        }, 5);
+
+        // Manejar cancelación
+        this.cancelGeneration.pipe(take(1)).subscribe(() => {
+          clearInterval(this.generationInterval);
+          if (botMessage.content.length === 0) {
+            // Si no se generó nada, eliminar el mensaje vacío
+            this.currentChat.messages = this.currentChat.messages.filter(m => m !== botMessage);
+          } else {
+            // Marcar como completado si se cancela pero hay contenido
+            botMessage.done = true;
+          }
+          this.isGenerating = false;
+        });
+        const graphChat = res.elements?.[0].object
+        console.log(graphChat)
+        this.rederGraph(graphChat)
+
+      },
+      (error) => {
+        console.error('Error al enviar mensaje:', error);
+        //this.responses = 'Ocurrió un error';
+      }
+    );
 
     // Añadir mensaje del usuario
     this.currentChat.messages.push({
@@ -129,54 +221,7 @@ export default class ChatBoxComponent implements OnInit, OnDestroy {
     this.isGenerating = true;
     this.scrollToBottom();
 
-    const responses = [
-      "Entiendo tu consulta. Vamos a analizarla en detalle...",
-      "Gracias por tu pregunta. Aquí tienes la información que necesitas:",
-      "Interesante pregunta. Permíteme explicarte lo siguiente:",
-      "Basado en los datos disponibles, puedo proporcionarte esta respuesta:"
-    ];
-    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
     // Simular generación de respuesta con posibilidad de cancelar
-    const fullResponse = `${randomResponse}\n\nLa inteligencia artificial como el Asistente Inteligente funciona procesando grandes cantidades de datos y encontrando patrones para generar respuestas coherentes. En este caso, estoy analizando tu pregunta y generando una respuesta basada en mi conocimiento.`;
-    let currentPosition = 0;
-
-    // Cancelar cualquier generación previa
-    this.cancelGeneration.next();
-
-    // Añadir mensaje vacío del bot
-    const botMessage: ChatMessage = {
-      role: 'bot',
-      content: '' ,
-      rating: null,
-      done: false
-    };
-    this.currentChat.messages.push(botMessage);
-
-    // Simular generación con efecto de escritura
-    this.generationInterval = setInterval(() => {
-      if (currentPosition < fullResponse.length) {
-        botMessage.content += fullResponse[currentPosition];
-        currentPosition++;
-        this.scrollToBottom();
-      } else {
-        this.stopGeneration();
-        botMessage.done = true;
-      }
-    }, 5);
-
-    // Manejar cancelación
-    this.cancelGeneration.pipe(take(1)).subscribe(() => {
-      clearInterval(this.generationInterval);
-      if (botMessage.content.length === 0) {
-        // Si no se generó nada, eliminar el mensaje vacío
-        this.currentChat.messages = this.currentChat.messages.filter(m => m !== botMessage);
-      } else {
-        // Marcar como completado si se cancela pero hay contenido
-        botMessage.done = true;
-      }
-      this.isGenerating = false;
-    });
-
   }
 
   stopGeneration() {
@@ -186,9 +231,6 @@ export default class ChatBoxComponent implements OnInit, OnDestroy {
     this.cancelGeneration.complete();
     clearInterval(this.generationInterval);
   }
-
-
-
 
   private scrollToBottom(): void {
     setTimeout(() => {

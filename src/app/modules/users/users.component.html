@@ -59,7 +59,7 @@
             <!--<th style="width: 3rem">
               <p-tableHeaderCheckbox />
             </th>-->
-            <th >Codigo</th>
+            <th style="width: 1rem">Codigo</th>
             <th >
               Nombre
             </th>
@@ -68,7 +68,7 @@
               Tipo de usuario
 
             </th>
-            <th  >
+            <th style="width: 1rem" >
               Aplicacion
             </th>
             <th >Acciones</th>
@@ -79,11 +79,11 @@
             <!--<td style="width: 3rem">
               <p-tableCheckbox [value]="user" />
             </td>-->
-            <td>{{ user.id }}</td>
+            <td style="width: 1rem">{{ user.id }}</td>
             <td>{{ user.name }}</td>
             <td>{{ user.email}}</td>
             <td>{{ user.role }}</td>
-            <td>{{ user.appUser}}</td>
+            <td style="width: 1rem">{{ user.appUser}}</td>
             <td>
               <button pButton icon="pi pi-pencil" class="btn-edit" [rounded]="true" (click)="editProduct(user)"></button>
               <button pButton icon="pi pi-trash" severity="danger" class="btn-delete" [rounded]="true" [outlined]="true" (click)="deleteProduct(user)"></button>

@@ -6,6 +6,7 @@ import { ButtonDirective} from 'primeng/button';
 import {Select} from 'primeng/select';
 import {Panel} from 'primeng/panel';
 import {FloatLabel} from "primeng/floatlabel";
+import IndicatorService from '../../core/service/indicator.service';
 
 
 interface Anio {
@@ -33,6 +34,9 @@ interface Category {
 export default class IndicatorsComponent implements OnInit{
   @ViewChild('vegaContainer', { static: true }) vegaContainer!: ElementRef;
   @ViewChild('vegaLineChart', { static: true }) vegaLineChart!: ElementRef;
+
+  data: any;
+  constructor(private indicator: IndicatorService) {}
 
 
   vegaSpec = {
@@ -62,6 +66,7 @@ export default class IndicatorsComponent implements OnInit{
     }
   };
 
+/*
   lineChartSpec = {
     "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
     "description": "Stock prices of 5 Tech Companies over Time.",
@@ -84,12 +89,35 @@ export default class IndicatorsComponent implements OnInit{
       "color": {"field": "symbol", "type": "nominal"}
     }
   };
+*/
 
   anios : Anio[] | undefined
   category : Category[] | undefined
   value1: Anio | undefined;
   value2: Category | undefined;
   ngOnInit(): void {
+
+   this.indicator.getData().subscribe((response: any) => {
+      this.data = response;
+
+     const graph = response.elements?.[0].object
+     console.log(graph)
+
+     if (graph?.transform) {
+       delete graph.transform;
+     }
+     graph.width = 'container';
+     graph.height = 200;
+
+     if (graph) {
+       // @ts-ignore
+       vegaEmbed(this.vegaLineChart.nativeElement, graph, { actions: false })
+         .catch(err => console.error('Error al renderizar Vega:', err));
+     }
+
+    });
+
+
     this.anios  = [
       { name: '2025', code: '1' },
       { name: '2024', code: '2' },
@@ -104,8 +132,8 @@ export default class IndicatorsComponent implements OnInit{
     vegaEmbed(this.vegaContainer.nativeElement, this.vegaSpec, { actions: false })
       .catch(error => console.error('Error al renderizar Vega:', error));
 
-    // @ts-ignore
+   /* // @ts-ignore
     vegaEmbed(this.vegaLineChart.nativeElement, this.lineChartSpec, { actions: false })
-      .catch(err => console.error('Error al renderizar el gráfico de líneas:', err));
+      .catch(err => console.error('Error al renderizar el gráfico de líneas:', err));*/
   }
 }

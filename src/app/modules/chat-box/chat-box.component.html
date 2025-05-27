@@ -16,7 +16,10 @@
                 <span *ngIf="message.role === 'bot'" class="material-symbols-outlined">smart_toy</span>
               </div>
               <div class="text-content">
-                <div class="message-text">{{ message.content }}</div>
+                <div class="message-text">
+                  {{ message.content }}
+
+                </div>
                 <div *ngIf="message.role === 'bot' && message.done" class="star-rating">
                   <p-rating [(ngModel)]="message.rating"
                             (onRate)="rateMessage(i, message.rating)"
@@ -27,7 +30,8 @@
               </div>
             </div>
           </div>
-
+          <div #vegaGraph  class="vega"></div>
+          <!--<div #vegaGraph class="vega"></div>-->
           <!-- Estado inicial cuando no hay mensajes -->
           <div class="empty-state" *ngIf="currentChat.messages.length === 0">
             <div class="empty-state-content">
