@@ -64,7 +64,7 @@ $bg-color-active: #F7FAEF;
     transition: all 0.3s ease;
 
     &:hover {
-      background-color: lighten(#E62020, 5%);
+      background-color: #E62020;
       transform: scale(1.1);
     }
 
@@ -112,7 +112,7 @@ $bg-color-active: #F7FAEF;
       color: $text-color;
 
       &:hover {
-        color: darken($text-color, 5%);
+        /*color: darken($text-color, 5%);*/
       }
     }
 

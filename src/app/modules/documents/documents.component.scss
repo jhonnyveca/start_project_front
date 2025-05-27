@@ -32,14 +32,14 @@
   border: 1px solid #766F6F;
   color: #766F6F;
   &:hover {
-    background-color: darken(#E0DCDC, 8%) !important;
-    border-color: lighten(#766F6F, 1%) !important;
+    background-color: #E0DCDC !important;
+    border-color: #766F6F !important;
     color: #766F6F;
   }
 }
 ::ng-deep .p-checkbox-checked .p-highlight{
   background-color: #3B8700 !important;
-  border-color: lighten(#3B8700, 1%) !important;
+  border-color: #3B8700 !important;
 }
 ::ng-deep .p-toolbar {
   border: 0!important;
@@ -75,8 +75,8 @@
   background-color: #766F6F;
   border: 1px solid #766F6F;
   &:hover {
-    background-color: darken(#766F6F, 5%) !important;
-    border-color: darken(#766F6F, 5%) !important;
+    background-color: #766F6F !important;
+    border-color: #766F6F !important;
   }
 }
 .btn-document-import{
