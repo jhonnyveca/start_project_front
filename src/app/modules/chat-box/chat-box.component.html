@@ -14,40 +14,37 @@
               <div class="avatar" [ngClass]="message.role">
                 <i *ngIf="message.role === 'user'" class="pi pi-user"></i>
                 <span *ngIf="message.role === 'bot'" class="material-symbols-outlined">smart_toy</span>
+                <!--<span *ngIf="message.role === 'graph'" class="material-symbols-outlined">bar_chart</span>-->
               </div>
               <div class="text-content">
-                <div class="message-text">
+                <div *ngIf="message.type === 'text'" class="message-text">
                   {{ message.content }}
-
                 </div>
-                <div *ngIf="message.role === 'bot' && message.done" class="star-rating">
+
+                <div *ngIf="message.type === 'graph'" #graphContainer class="graph-container"></div>
+
+                <!-- Rating para mensajes BOT sin gráfico -->
+                <div *ngIf="message.role === 'bot' && !message.hasGraph && message.done" class="graph-rating">
                   <p-rating [(ngModel)]="message.rating"
                             (onRate)="rateMessage(i, message.rating)"
                             [readonly]="false">
                   </p-rating>
-
+                </div>
+                <!-- Rating para gráficos -->
+                <div *ngIf="message.role === 'graph'" class="graph-rating">
+                  <p-rating [(ngModel)]="message.rating"
+                            (onRate)="rateMessage(i, message.rating)"
+                            [readonly]="false">
+                  </p-rating>
                 </div>
               </div>
             </div>
           </div>
-          <div #vegaGraph  class="vega"></div>
-          <!--<div #vegaGraph class="vega"></div>-->
+
           <!-- Estado inicial cuando no hay mensajes -->
           <div class="empty-state" *ngIf="currentChat.messages.length === 0">
             <div class="empty-state-content">
-             <!-- <h1>Bienvenido(a) al Asistente Inteligente</h1>-->
               <h4>¿En qué puedo ayudarte?</h4>
-              <!--<div class="suggestion-buttons">
-                <button class="suggestion-btn" (click)="suggestQuestion('¿Cómo funciona el Asistente Inteligente?')">
-                  "¿Cómo funciona el Asistente Inteligente?"
-                </button>
-                <button class="suggestion-btn" (click)="suggestQuestion('Dame ideas para escribir un poema')">
-                  "Dame ideas para escribir un poema"
-                </button>
-                <button class="suggestion-btn" (click)="suggestQuestion('Explica la teoría de la relatividad')">
-                  "Explica la teoría de la relatividad"
-                </button>
-              </div>-->
             </div>
           </div>
         </div>
@@ -72,9 +69,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Input flotante -->
-
     </div>
   </div>
 
