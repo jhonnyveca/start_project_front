@@ -20,6 +20,7 @@ $bg-color-active: #F7FAEF;
   height: calc(100vh - #{$toolbar-height});
   position: relative;
   width: 100%;
+  background-color: #F9F6F6;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -57,6 +58,7 @@ $bg-color-active: #F7FAEF;
   transition: width 0.3s ease;
   color: #000000;
   flex-shrink: 0;
+
 
   &.collapsed {
     width: 0;
@@ -194,7 +196,7 @@ $bg-color-active: #F7FAEF;
   border-radius: 50%;
   color: $white-color;
   cursor: pointer;
-  z-index: 90;
+  z-index: 9;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -217,7 +219,7 @@ $bg-color-active: #F7FAEF;
     flex-direction: column;
 
     label {
-      font-weight: 600;
+      font-weight: 500;
       font-size: 14px !important;
       color: $text-title-color;
       margin-bottom: 0.5rem;
@@ -303,15 +305,16 @@ $bg-color-active: #F7FAEF;
 
 @media (max-width: 768px) {
   .dashboard-container {
-    height: calc(100vh - #{$toolbar-height});
+    height: 100% !important;
   }
+
 
   .dashboard-sidebar {
     position: fixed;
     top: $toolbar-height;
     right: 0;
     height: calc(100vh - #{$toolbar-height});
-    z-index: 10;
+    z-index: 9;
 
     &.collapsed {
       transform: translateX(100%);

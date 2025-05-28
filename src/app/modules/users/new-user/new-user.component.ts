@@ -6,6 +6,9 @@ import {InputText} from 'primeng/inputtext';
 import {User} from '../../../core/models/user';
 import {MultiSelect} from 'primeng/multiselect';
 import {RouterLink} from '@angular/router';
+import {FloatLabel} from 'primeng/floatlabel';
+
+
 
 @Component({
   selector: 'app-new-user',
@@ -15,7 +18,8 @@ import {RouterLink} from '@angular/router';
     DropdownModule,
     InputText,
     MultiSelect,
-    RouterLink
+    RouterLink,
+    FloatLabel
   ],
   templateUrl: './new-user.component.html',
   standalone: true,
@@ -28,6 +32,7 @@ export default class NewUserComponent {
     role: '',
     appUser: ''
   };
+  value2: string | undefined;
 
   roles = [
     { name: 'Administrador', code: 'admin' },

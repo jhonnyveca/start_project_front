@@ -28,6 +28,7 @@ export default class LayoutComponent implements OnInit {
 
   isDarkTheme = true;
 
+
   constructor(
     private renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document
@@ -108,4 +109,5 @@ export default class LayoutComponent implements OnInit {
   logout() {
     console.log('Cerrar sesión');
   }
+
 }

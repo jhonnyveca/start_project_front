@@ -26,7 +26,12 @@
     </div>
     <div class="card">
       <button pButton  label="Registrar" icon="pi pi-plus" class="btn-document-import" [routerLink]="['register']"></button>
-      <button pButton  label="Indexacion" icon="pi pi-list-check"  class="btn-document-index"></button>
+      <button pButton  label="Indexacion" icon="pi pi-list-check"  class="btn-document-index"></button> <br><br>
+
+      <button pButton  label="Subir" icon="pi pi-upload"  class="btn-document-upload" ></button>
+      <button pButton  label="Guardar" icon="pi pi-save" class="btn-document-upload" ></button>
+      <button pButton  label="Borrar" icon="pi pi-trash" class="btn-document-upload" ></button>
+      <br>
       <p-treetable
         [value]="files"
         [columns]="cols"

@@ -64,9 +64,9 @@ export default class DocumentsComponent implements OnInit{
     this.loadDemoData();
     this.repositoriesService.getTreeTableNodes().then((files) => (this.files = files));
     this.cols = [
-      { field: 'name', header: 'Name' },
+      { field: 'name', header: 'Repositorio' },
       { field: 'size', header: 'Size' },
-      { field: 'type', header: 'Type' }
+      { field: 'type', header: 'Tipo' }
     ];
 
     this.selectionKeys = {

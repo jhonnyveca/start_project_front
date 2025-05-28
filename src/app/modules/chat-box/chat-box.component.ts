@@ -1,10 +1,21 @@
-import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  QueryList, ViewChild,
+  ViewChildren
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgClass, NgForOf, NgIf } from '@angular/common';
-import { Subject } from 'rxjs';
+import {Subject} from 'rxjs';
 import { Rating } from 'primeng/rating';
 import { ChatService } from '../../core/service/chat.service';
 import vegaEmbed from 'vega-embed';
+import { trigger, transition, style, animate, state } from '@angular/animations';
 
 interface ChatMessage {
   role: 'user' | 'bot' | 'graph';
@@ -34,16 +45,32 @@ interface ChatSession {
   ],
   templateUrl: './chat-box.component.html',
   standalone: true,
-  styleUrl: './chat-box.component.scss'
+  styleUrl: './chat-box.component.scss',
+  animations: [
+    trigger('fadeInUp', [
+      state('in', style({ opacity: 1, transform: 'translateY(0)' })),
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(10px)' }),
+        animate('0.3s ease-out')
+      ])
+    ])
+  ]
 })
-export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestroy {
+export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestroy, AfterViewChecked {
   @ViewChildren('graphContainer') graphContainers!: QueryList<ElementRef>;
+  @ViewChild('bottomAnchor') bottomAnchor!: ElementRef;
 
   isSidebarCollapsed: boolean = false;
   userInput: string = '';
   isGenerating = false;
   private cancelGeneration = new Subject<void>();
   private generationInterval?: any;
+
+  typewriterText: string = '¿En qué puedo ayudarte?';
+  displayedText: string = '';
+  typewriterIndex: number = 0;
+
+  showHelpSuggestions: boolean = false;
 
   constructor(private chatService: ChatService) {}
 
@@ -67,15 +94,30 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
   ngOnInit() {
     this.updateSidebarForScreenSize();
     this.initializeNewChat();
+    this.startTypewriter();
   }
 
+  startTypewriter() {
+    const interval = setInterval(() => {
+      if (this.typewriterIndex < this.typewriterText.length) {
+        this.displayedText += this.typewriterText[this.typewriterIndex];
+        this.typewriterIndex++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 40); // velocidad del efecto (en ms)
+  }
+  onMicClick() {
+    console.log('Micrófono activado');
+
+  }
   @HostListener('window:resize')
   onResize() {
     this.updateSidebarForScreenSize();
   }
 
   updateSidebarForScreenSize() {
-    this.isSidebarCollapsed = window.innerWidth <= 768;
+    this.isSidebarCollapsed = window.innerWidth <= 960;
   }
 
   toggleSidebar(): void {
@@ -118,7 +160,6 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
     chat.editing = true;
   }
 
-
   rateMessage(messageIndex: number, rating: number | null | undefined) {
     console.log(`Mensaje ${messageIndex} calificado con ${rating} estrellas`);
   }
@@ -131,10 +172,10 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
 
       if (message && message.content) {
         const graphData = {...message.content};
-        if (graphData?.transform) {
+        /*if (graphData?.transform) {
           delete graphData.transform;
-        }
-        graphData.width = 250;
+        }*/
+        graphData.width = 'container';
         graphData.height = 200;
 
         // Limpiar el contenedor antes de renderizar
@@ -168,12 +209,18 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
     this.isGenerating = true;
     this.scrollToBottom();
 
+
     this.chatService.sendMenssage({
-      id_project: '12',
-      id_chat: '1',
-      id_session: '1',
-      id_channel: '1',
-      id_user: 'erodriguez',
+      chatHeader : {
+        id_project: "2",
+        id_chat: "009",
+        title_chat: "Chat prueba",
+        id_user: "erodriguez",
+        createdDate: "2025-03-12T14:00:12",
+        lastUpdateDate: "2025-03-14T09:41:23"
+      },
+      id_session: "1",
+      id_channel: "1",
       message: userMessage,
       index_message: 1
     }).subscribe({
@@ -240,12 +287,55 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
     clearInterval(this.generationInterval);
   }
 
-  private scrollToBottom(): void {
-    setTimeout(() => {
-      const messagesContainer = document.querySelector('.messages-container');
-      if (messagesContainer) {
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-      }
-    }, 100);
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
   }
+
+  suggestions = [
+    { text: 'Aprende sobre la gestión del tiempo', icon: 'schedule', title: 'Gestión del tiempo' },
+    { text: 'Aprende sobre el trading de acciones', icon: 'trending_up', title: 'Trading de acciones' },
+    { text: 'Aprende sobre las habilidades de negociación para los negocios',
+      icon: 'handshake', title: 'Habilidades de negociación' },
+    { text: 'Aprende sobre cómo manejar conversaciones difíciles',
+      icon: 'forum', title: 'Conversaciones difíciles' }
+  ];
+  animationStates: boolean[] = [];
+// Métodos para manejar las sugerencias
+  toggleHelpSuggestions() {
+    this.showHelpSuggestions = !this.showHelpSuggestions;
+    if (this.showHelpSuggestions) {
+      this.animationStates = this.suggestions.map(() => false);
+    }
+  }
+
+  onAnimationDone(index: number) {
+    this.animationStates[index] = true;
+  }
+
+  selectSuggestion(text: string) {
+    this.userInput = text;
+    this.showHelpSuggestions = false;
+
+    this.setFocusToInput();
+  }
+  private setFocusToInput() {
+    // Usamos setTimeout para asegurar que el cambio de detección de Angular haya terminado
+    setTimeout(() => {
+      const inputElement = document.querySelector('.chat-input') as HTMLInputElement;
+      if (inputElement) {
+        inputElement.focus();
+        // Opcional: mover el cursor al final del texto
+        inputElement.setSelectionRange(inputElement.value.length, inputElement.value.length);
+      }
+    }, 10); // Pequeño delay para garantizar que el DOM esté actualizado
+  }
+
+  private scrollToBottom(): void {
+    try {
+      this.bottomAnchor.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    } catch (err) {
+      console.error('No se pudo hacer scroll:', err);
+    }
+  }
+
 }

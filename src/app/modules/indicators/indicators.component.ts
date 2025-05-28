@@ -103,9 +103,9 @@ export default class IndicatorsComponent implements OnInit{
      const graph = response.elements?.[0].object
      console.log(graph)
 
-     if (graph?.transform) {
+    /* if (graph?.transform) {
        delete graph.transform;
-     }
+     }*/
      graph.width = 'container';
      graph.height = 200;
 

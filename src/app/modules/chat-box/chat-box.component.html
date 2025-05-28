@@ -38,25 +38,34 @@
                   </p-rating>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <!-- Estado inicial cuando no hay mensajes -->
-          <div class="empty-state" *ngIf="currentChat.messages.length === 0">
-            <div class="empty-state-content">
-              <h4>¿En qué puedo ayudarte?</h4>
             </div>
+
           </div>
+          <div #bottomAnchor></div>
         </div>
+
+
         <div class="input-spacer" *ngIf="currentChat.messages.length > 0"></div>
         <div class="floating-input-wrapper">
+
           <div class="chat-input-container" [class.has-messages]="currentChat.messages.length > 0">
+            <!-- Estado inicial cuando no hay mensajes -->
+            <div class="empty-state"  *ngIf="currentChat.messages.length === 0">
+              <div class="empty-state-content">
+                <h4 class="typing-text">{{ displayedText }}</h4>
+
+              </div>
+            </div>
             <div class="input-wrapper">
               <input type="text"
                      [(ngModel)]="userInput"
                      (keydown.enter)="sendMessage()"
                      placeholder="Pregunta lo que quieras"
                      class="chat-input" />
+              <button class="btn-mic" (click)="onMicClick()">
+                <span class="material-symbols-outlined">mic</span>
+              </button>
               <button class="btn-send"
                       [disabled]="!userInput.trim() && !isGenerating"
                       (click)="isGenerating ? stopGeneration() : sendMessage()">
@@ -66,7 +75,32 @@
               }"></i>
               </button>
             </div>
+            <!-- Botón Ayúdame a escribir -->
+            <div class="help-write-container" *ngIf="currentChat.messages.length === 0">
+              <button class="help-write-btn" (click)="toggleHelpSuggestions()">
+                <span class="material-symbols-outlined">edit</span>
+                <span>Ayúdame a escribir</span>
+              </button>
+
+              <div class="suggestions-dropdown" *ngIf="showHelpSuggestions">
+                <div class="suggestion-category">
+                  <ul class="suggestion-list">
+                    <li *ngFor="let suggestion of suggestions; let i = index"
+                        [@fadeInUp]="'in'"
+                        (@fadeInUp.done)="onAnimationDone(i)"
+                        (click)="selectSuggestion(suggestion.text)"
+                        [style.animation-delay]="i * 0.1 + 's'">
+                      <span class="material-symbols-outlined">{{suggestion.icon}}</span>
+                      {{suggestion.title}}
+                      <div class="suggestion-divider" *ngIf="i < suggestions.length - 1"></div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
           </div>
+
+          <!---->
         </div>
       </div>
     </div>

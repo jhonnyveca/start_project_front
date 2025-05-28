@@ -1,29 +1,38 @@
 <div class="new-user-container">
   <div class="user-form card">
-    <h2>Registrar usuario</h2>
+    <h4>Registrar usuario</h4>
     <form #userForm="ngForm" (ngSubmit)="createUser()" class="form-grid">
       <!-- Campo: Nombre -->
       <div class="form-field">
-        <label for="name">Nombre</label>
-        <input id="name" type="text" pInputText [(ngModel)]="user.name" name="name" required />
+        <p-floatlabel variant="on">
+          <input pInputText id="on_name" [(ngModel)]="user.name" [ngModelOptions]="{ standalone: true }" autocomplete="off" />
+          <label for="on_name">Nombre</label>
+        </p-floatlabel>
+       <!-- <label for="name">Nombre</label>
+        <input id="name" type="text" pInputText [(ngModel)]="user.name" name="name" required />-->
       </div>
 
-      <div class="form-field"></div>
+      <div class="space-inputs"></div>
 
       <!-- Campo: Correo -->
       <div class="form-field">
-        <label for="email">Correo electrónico</label>
-        <input id="email" type="email" pInputText [(ngModel)]="user.email" name="email" required />
+        <!--<label for="email">Correo electrónico</label>
+        <input id="email" type="email" pInputText [(ngModel)]="user.email" name="email" required />-->
+        <p-floatlabel variant="on">
+          <input pInputText id="on_email" [(ngModel)]="user.email" [ngModelOptions]="{ standalone: true }" autocomplete="off" />
+          <label for="on_email">Correo</label>
+        </p-floatlabel>
       </div>
+
 
       <!-- Campo: Rol -->
       <div class="form-field">
-        <label >Tipo de acceso</label>
+        <!--<label >Tipo de acceso</label>-->
         <p-multiselect
           [options]="roles"
           name="role"
           [(ngModel)]="user.role"
-          placeholder="Seleccione una opcion"
+          placeholder="Tipo de acceso"
           optionLabel="name"
           display="chip"
           styleClass="w-full md:w-80"></p-multiselect>
@@ -32,12 +41,12 @@
 
       <!-- Campo: App Usuario -->
       <div class="form-field">
-        <label >Rol operativo</label>
+        <!--<label >Rol operativo</label>-->
         <p-multiselect
           [options]="apps"
           name="appUser"
           [(ngModel)]="user.appUser"
-          placeholder="Seleccione una opcion"
+          placeholder="Rol operativo"
           optionLabel="name"
           display="chip"
           styleClass="w-full md:w-80"></p-multiselect>
@@ -46,7 +55,7 @@
       <!-- Botones -->
       <div class="form-actions">
         <button pButton type="submit" label="Registrar" icon="pi pi-check" class="btn-new-user-register" [disabled]="userForm.invalid"></button>
-        <button pButton type="button" label="Cancelar" icon="pi pi-times"  severity="secondary" routerLink="/users"></button>
+        <button pButton type="button" label="Cancelar" icon="pi pi-times" class="btn-cancel"  severity="secondary" routerLink="/users"></button>
       </div>
     </form>
   </div>

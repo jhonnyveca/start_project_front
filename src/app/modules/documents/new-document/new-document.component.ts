@@ -26,6 +26,8 @@ import {NgForOf, NgIf} from '@angular/common';
 export default class NewDocumentComponent{
   @ViewChild('fileInput') fileInput!: ElementRef;
 
+
+
   rutas:any[] = [
     { documentRepository: 'https://github.com/documents/commons'},
     { documentRepository: 'https://github.com/documents/main' }

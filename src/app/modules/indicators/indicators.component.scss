@@ -3,11 +3,12 @@
   overflow-y: auto;
   transition: margin-right 0.3s ease;
   height: calc(100vh - 60px);
-
+  background-color: #F9F6F6 !important;
 
   .indicator-content{
     max-width: 100%;
     margin: 0 auto;
+
   }
 }
 .card-indicator {
@@ -72,7 +73,6 @@
 .form-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
   padding: 1rem 1rem 0 1rem;
 }
 
@@ -140,7 +140,9 @@ h4{
 }
 .btn-report{
   font-size: 14px !important;
- margin: 0 0.5rem;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+  margin-top: 2rem;
   background-color: #FFFFFF;
   border: none;
   color: #E62020;

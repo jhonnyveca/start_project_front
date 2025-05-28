@@ -1,6 +1,7 @@
 .user-container{
   flex-grow: 1;
   overflow-y: auto;
+  background-color: #F9F6F6;
   transition: margin-right 0.3s ease;
   height: calc(100vh - 60px);
 
@@ -99,7 +100,7 @@
   }
   .card {
     margin: 1rem;
-    padding: 0.5rem;
+    padding: 1rem;
   }
   .search {
     display: grid;

@@ -2,10 +2,12 @@
   flex-grow: 1;
   overflow-y: auto;
   transition: margin-right 0.3s ease;
+  background-color: #F9F6F6 !important;
   height: calc(100vh - 60px);
   .template-content{
     max-width: 100%;
     margin: 0 auto;
+
   }
 }
 .card {
