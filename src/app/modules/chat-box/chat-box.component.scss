@@ -118,13 +118,13 @@ $bg-color-active: #F7FAEF;
     }
 
     .new-chat-btn {
-      width: calc(100% - 4rem);
+      width: calc(70% - 4rem);
       padding: 0.5rem;
       font-size: 14px !important;
       background-color: #E62020;
       border: 1px solid #E62020;
       color: $white-color;
-      text-align: left;
+      text-align: center;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -156,7 +156,7 @@ $bg-color-active: #F7FAEF;
       align-items: center;
       gap: 12px;
       cursor: pointer;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 0.2rem;
       border-radius: 6px;
       margin: 0 0.5rem;
       font-size: 0.9rem;
@@ -165,12 +165,15 @@ $bg-color-active: #F7FAEF;
       text-overflow: ellipsis;
 
       &:hover {
-        color: #E62020;
-        i{
-          color: #E62020;
+        background-color: #FAF7F7;
+        .history-item-content {
+          transform: translateX(8px);
+        }
+        .edit-icon {
+          opacity: 1;
+          transform: scale(1);
         }
       }
-
       i {
         color:#000000;
         font-size: 1rem;
@@ -186,11 +189,65 @@ $bg-color-active: #F7FAEF;
       }
 
       &.active {
-        color: #E62020;
-        i{
-          color: #E62020;
-        }
+        background-color: #FAF7F7;
       }
+    }
+    .history-item-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-grow: 1;
+      transition: transform 0.3s ease;
+      width: 100%;
+    }
+    .edit-icon {
+
+      opacity: 0;
+      color: $accent-color;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      transform: scale(0.8);
+      cursor: pointer;
+      flex-shrink: 0;
+
+      &:hover {
+        color: #E62020;
+        display: block;
+        transform: scale(1.1);
+      }
+    }
+    .title-input {
+      flex-grow: 1;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid $accent-color;
+      outline: none;
+      color: $text-color;
+      font-size: 0.9rem;
+      padding: 0.2rem 0;
+      width: 100%;
+    }
+    i:not(.edit-icon) {
+      color: #000000;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: transform 0.3s ease;
+      flex-grow: 1;
+    }
+    .title-input {
+      flex-grow: 1;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid $accent-color;
+      outline: none;
+      color: $text-color;
+      font-size: 0.9rem;
+      padding: 0.2rem 0;
     }
   }
 
@@ -226,7 +283,7 @@ $bg-color-active: #F7FAEF;
           }
 
           .message-content {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             display: flex;
             gap: 1rem;
@@ -336,16 +393,16 @@ $bg-color-active: #F7FAEF;
 
 
       .chat-input-container {
-        max-width: 900px;
+        max-width: 950px;
         margin: 0 auto;
         padding: 0 1rem;
         background-color: #FFFFFF !important;
         border-radius: 50px 50px 0 0;
 
         &:not(.has-messages) {
-          max-width: 600px;
+          max-width: 800px;
           position: absolute;
-          bottom:32vh;
+          bottom:25vh;
           left: 0;
           right: 0;
           background: transparent;
@@ -421,9 +478,11 @@ $bg-color-active: #F7FAEF;
             padding: 0.5rem;
 
             .pi {
-              font-size: 2.4rem;
-              background-color: #3B8700;
+              margin-top: 3px !important;
+              font-size: 1.2rem;
+              background-color: #E62020;
               color: white;
+              padding: 0.5rem;
               border-radius: 50%;
             }
 
@@ -470,7 +529,27 @@ $bg-color-active: #F7FAEF;
     }
   }
 }
+.chat-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
 
+  .pi-spinner {
+    font-size: 2rem;
+    color: #E62020;
+  }
+}
+
+.empty-state {
+  /* Mantener tus estilos existentes */
+  transition: opacity 0.3s ease;
+}
+
+/* Ocultar empty-state cuando hay mensajes */
+.chat-message:first-child ~ .empty-state {
+  display: none;
+}
 
 // Rating
 .graph-rating {
@@ -668,6 +747,19 @@ $bg-color-active: #F7FAEF;
 
     .chat-input-container {
       max-width: 100% !important; /* Ajuste de ancho completo */
+
+      &:not(.has-messages) {
+        bottom: 36vh !important;
+
+        .chat-input {
+          margin-bottom: 0 !important;
+        }
+
+        .input-wrapper {
+          margin: 0 8px;
+        }
+      }
+
 
       .empty-state {
         position: relative;

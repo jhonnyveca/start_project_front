@@ -8,6 +8,9 @@
     <div class="chat-window">
       <div class="messages-container">
         <div class="chat-messages">
+          <div *ngIf="currentChat?.isLoading" class="chat-loading">
+            <i class="pi pi-spinner pi-spin"></i>
+          </div>
           <!-- Mensajes existentes -->
           <div *ngFor="let message of currentChat.messages; let i = index" class="chat-message" [ngClass]="[message.role]">
             <div class="message-content">
@@ -51,53 +54,56 @@
 
           <div class="chat-input-container" [class.has-messages]="currentChat.messages.length > 0">
             <!-- Estado inicial cuando no hay mensajes -->
-            <div class="empty-state"  *ngIf="currentChat.messages.length === 0">
-              <div class="empty-state-content">
-                <h4 class="typing-text">{{ displayedText }}</h4>
-
-              </div>
-            </div>
-            <div class="input-wrapper">
-              <input type="text"
-                     [(ngModel)]="userInput"
-                     (keydown.enter)="sendMessage()"
-                     placeholder="Pregunta lo que quieras"
-                     class="chat-input" />
-              <button class="btn-mic" (click)="onMicClick()">
-                <span class="material-symbols-outlined">mic</span>
-              </button>
-              <button class="btn-send"
-                      [disabled]="!userInput.trim() && !isGenerating"
-                      (click)="isGenerating ? stopGeneration() : sendMessage()">
-                <i class="pi" [ngClass]="{
-                'pi-arrow-circle-up': !isGenerating,
-                'pi-stop-circle': isGenerating
-              }"></i>
-              </button>
-            </div>
-            <!-- Botón Ayúdame a escribir -->
-            <div class="help-write-container" *ngIf="currentChat.messages.length === 0">
-              <button class="help-write-btn" (click)="toggleHelpSuggestions()">
-                <span class="material-symbols-outlined">edit</span>
-                <span>Ayúdame a escribir</span>
-              </button>
-
-              <div class="suggestions-dropdown" *ngIf="showHelpSuggestions">
-                <div class="suggestion-category">
-                  <ul class="suggestion-list">
-                    <li *ngFor="let suggestion of suggestions; let i = index"
-                        [@fadeInUp]="'in'"
-                        (@fadeInUp.done)="onAnimationDone(i)"
-                        (click)="selectSuggestion(suggestion.text)"
-                        [style.animation-delay]="i * 0.1 + 's'">
-                      <span class="material-symbols-outlined">{{suggestion.icon}}</span>
-                      {{suggestion.title}}
-                      <div class="suggestion-divider" *ngIf="i < suggestions.length - 1"></div>
-                    </li>
-                  </ul>
+            <ng-container *ngIf="!currentChat?.isLoading">
+              <div class="empty-state"  *ngIf="currentChat.messages.length === 0">
+                <div class="empty-state-content">
+                  <h1>Hola, me llamo Finsight.</h1>
+                  <h4 class="typing-text">{{ displayedText }}</h4>
                 </div>
               </div>
-            </div>
+              <div class="input-wrapper">
+                <input type="text"
+                       [(ngModel)]="userInput"
+                       (keydown.enter)="sendMessage()"
+                       placeholder="Pregunta lo que quieras"
+                       class="chat-input" />
+                <button class="btn-mic" (click)="onMicClick()">
+                  <span class="material-symbols-outlined">mic</span>
+                </button>
+                <button class="btn-send"
+                        [disabled]="!userInput.trim() && !isGenerating"
+                        (click)="isGenerating ? stopGeneration() : sendMessage()">
+                  <i class="pi" [ngClass]="{
+                'pi-arrow-up': !isGenerating,
+                'pi-stop-circle': isGenerating
+              }"></i>
+                </button>
+              </div>
+              <!-- Botón Ayúdame a escribir -->
+              <div class="help-write-container" *ngIf="currentChat.messages.length === 0">
+                <button class="help-write-btn" (click)="toggleHelpSuggestions()">
+                  <span class="material-symbols-outlined">edit</span>
+                  <span>Ayúdame a escribir</span>
+                </button>
+
+                <div class="suggestions-dropdown" *ngIf="showHelpSuggestions">
+                  <div class="suggestion-category">
+                    <ul class="suggestion-list">
+                      <li *ngFor="let suggestion of suggestions; let i = index"
+                          [@fadeInUp]="'in'"
+                          (@fadeInUp.done)="onAnimationDone(i)"
+                          (click)="selectSuggestion(suggestion.text)"
+                          [style.animation-delay]="i * 0.1 + 's'">
+                        <!--<span class="material-symbols-outlined">{{suggestion.icon}}</span>-->
+                        {{suggestion.text}}
+                        <div class="suggestion-divider" *ngIf="i < suggestions.length - 1"></div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+
           </div>
 
           <!---->
@@ -112,21 +118,29 @@
       <i class="pi pi-angle-left"></i>
     </button>
     <button class="new-chat-btn" (click)="newChat()">
-      <i class="material-symbols-outlined">add_comment</i>
+      <!--<i class="material-symbols-outlined">add_comment</i>-->
       <span class="label">Nuevo chat</span>
     </button>
     <div class="chat-history-title" *ngIf="!isSidebarCollapsed">Historial de chat</div>
     <div *ngFor="let chat of chatHistory"
          (click)="loadChat(chat)"
          [class.active]="chat.id === currentChat.id"
-         class="history-item"
-         (dblclick)="editTitle(chat)">
-      <i class="material-symbols-outlined">forum</i>
-      <span class="label" *ngIf="!chat.editing">{{ chat.title }}</span>
-      <input *ngIf="chat.editing"
-             [(ngModel)]="chat.title"
-             (blur)="chat.editing = false"
-             (keydown.enter)="chat.editing = false" />
+         class="history-item">
+      <div class="history-item-content">
+        <!--<i class="material-symbols-outlined">forum</i>-->
+        <i class="material-symbols-outlined edit-icon"
+           (click)="editTitle(chat, $event)">edit</i>
+        <span class="label" *ngIf="!chat.editing">{{ chat.title }}</span>
+        <input *ngIf="chat.editing"
+               [(ngModel)]="chat.title"
+               (blur)="saveTitle(chat)"
+               (keydown.enter)="saveTitle(chat)"
+               (keydown.escape)="cancelEdit(chat)"
+               class="title-input"/>
+      </div>
+      <!--<div class="history-item-actions">
+
+      </div>-->
     </div>
   </div>
 </div>

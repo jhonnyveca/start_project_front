@@ -20,7 +20,7 @@
   <!-- User Menubar -->
   <p-menu #userMenu [model]="userItems" [popup]="true"></p-menu>
   <div class="user-profile" (click)="userMenu.toggle($event)">
-    <span class="user-name">Hola, Emiliano Rodriguez</span>
+    <span class="user-name">{{userEmail}}</span>
     <!--<i class="pi pi-user"></i>-->
     <img src="https://i.pravatar.cc/150?img=59" alt="User" class="user-avatar" />
 
@@ -42,7 +42,7 @@
       (click)="toggleCollapse()"
     ></a>
     <ul class="sidenav-list">
-      <li  routerLink="/chat-box" routerLinkActive="active" class="clickable" (click)="onMenuOptionClick()">
+      <li *ngIf="userRole > 0 && userRole!=3"  routerLink="/main/chat-box" routerLinkActive="active" class="clickable" (click)="onMenuOptionClick()">
         <div class="module-title">
           <!--<i class="pi pi-box"></i>-->
           <i class="material-symbols-outlined">robot_2</i>
@@ -50,14 +50,29 @@
           <span *ngIf="!sidebarCollapsed">Asistente</span>
         </div>
       </li>
-      <li routerLink="/dashboard" routerLinkActive="active" class="clickable" (click)="onMenuOptionClick()">
+      <li *ngIf="userRole > 0 && userRole!=3" routerLink="/main/dashboard" routerLinkActive="active" class="clickable" (click)="onMenuOptionClick()">
         <div class="module-title">
           <i class="pi pi-objects-column"></i>
           <span *ngIf="!sidebarCollapsed">Dashboard</span>
         </div>
       </li>
-      <li class="group-title" >Administración</li>
-      <li routerLink="/users" routerLinkActive="active" class="clickable" (click)="onMenuOptionClick()">
+      <li *ngIf="userRole != 2" class="group-title" >Administración</li>
+      <!-- Módulos dinámicos según rol -->
+      <ng-container *ngFor="let module of availableModules">
+        <!-- Excluimos Asistente y Dashboard que ya están renderizados arriba -->
+        <li *ngIf="module.path !== '/main/chat-box' && module.path !== '/main/dashboard'"
+            [routerLink]="module.path"
+            routerLinkActive="active"
+            class="clickable"
+            (click)="onMenuOptionClick()">
+          <div class="module-title">
+            <i *ngIf="module.icon.startsWith('pi')" [class]="module.icon"></i>
+            <i *ngIf="!module.icon.startsWith('pi')" class="material-symbols-outlined">{{module.icon}}</i>
+            <span *ngIf="!sidebarCollapsed">{{module.label}}</span>
+          </div>
+        </li>
+      </ng-container>
+      <!--<li routerLink="/users" routerLinkActive="active" class="clickable" (click)="onMenuOptionClick()">
         <div
           class="module-title">
           <i class="pi pi-users"></i>
@@ -70,20 +85,18 @@
           <span *ngIf="!sidebarCollapsed">Repositorios</span>
         </div>
       </li>
-
       <li routerLink="/template" routerLinkActive="active" class="clickable" (click)="onMenuOptionClick()">
         <div class="module-title">
           <i class="material-symbols-outlined">layers</i>
           <span *ngIf="!sidebarCollapsed">Plantillas</span>
         </div>
       </li>
-
       <li routerLink="/indicators" routerLinkActive="active" class="clickable" (click)="onMenuOptionClick()">
         <div class="module-title">
           <i class="material-symbols-outlined">rocket_launch</i>
           <span *ngIf="!sidebarCollapsed">Indicadores</span>
         </div>
-      </li>
+      </li>-->
     </ul>
   </div>
   <!-- Toggle de tema fijo al final -->

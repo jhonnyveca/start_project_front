@@ -2,7 +2,11 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'login',
+    loadComponent: () => import('./core/authentication/login/login.component')
+  },
+  {
+    path: 'main',
     loadComponent:()=> import('./shared/layout/layout.component'),
     children:[
       {
@@ -36,16 +40,21 @@ export const routes: Routes = [
       {
         path:'template',
         loadComponent:()=> import('./modules/template/template.component'),
-      },
-      {
-        path:'',
-        redirectTo:'chat-box',
-        pathMatch:'full'
       }
+
     ]
   },
   {
     path:'error-page',
     loadComponent:()=> import('./core/authentication/error-page/error-page.component'),
+  },
+  {
+    path: '**',
+    redirectTo: 'login'
+  },
+  {
+    path:'',
+    redirectTo:'login',
+    pathMatch:'full'
   }
 ];
