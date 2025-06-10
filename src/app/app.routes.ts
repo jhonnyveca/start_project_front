@@ -22,6 +22,10 @@ export const routes: Routes = [
         loadComponent:()=> import('./modules/users/new-user/new-user.component'),
       },
       {
+        path:'roles',
+        loadComponent:() => import('./modules/roles/roles.component'),
+      },
+      {
         path:'repositories',
         loadComponent:() => import('./modules/documents/documents.component'),
       },

@@ -17,10 +17,6 @@ interface Column {
   customExportHeader?: string;
 }
 
-interface ExportColumn {
-  title: string;
-  dataKey: string;
-}
 @Component({
   selector: 'app-users',
   imports: [
@@ -58,7 +54,6 @@ export default class UsersComponent implements OnInit {
 
   cols!: Column[];
 
-  exportColumns!: ExportColumn[];
 
   constructor(
     private userService: UserService,
@@ -84,10 +79,6 @@ export default class UsersComponent implements OnInit {
 
   }
 
-  openNew() {
-    this.user = {};
-    this.submitted = false;
-  }
 
   editProduct(user: User) {
     this.user = { ...user };
@@ -96,18 +87,6 @@ export default class UsersComponent implements OnInit {
 
   deleteProduct(user: User) {
 
-  }
-
-  // @ts-ignore
-  getSeverity(status: string) {
-    switch (status) {
-      case 'INSTOCK':
-        return 'success';
-      case 'LOWSTOCK':
-        return 'warn';
-      case 'OUTOFSTOCK':
-        return 'danger';
-    }
   }
 
 }

@@ -540,16 +540,37 @@ $bg-color-active: #F7FAEF;
     color: #E62020;
   }
 }
-
 .empty-state {
   /* Mantener tus estilos existentes */
   transition: opacity 0.3s ease;
 }
-
 /* Ocultar empty-state cuando hay mensajes */
 .chat-message:first-child ~ .empty-state {
   display: none;
 }
+
+.graph-container {
+  width: 100%;
+  margin: 1rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+
+  // Estilo para el mensaje de error
+  .error-message {
+    padding: 1rem;
+    color: #d32f2f;
+    text-align: center;
+  }
+
+  // Asegurar que el SVG se ajuste al contenedor
+  svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}
+
 
 // Rating
 .graph-rating {

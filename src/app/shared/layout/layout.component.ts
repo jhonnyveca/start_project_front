@@ -73,6 +73,12 @@ export default class LayoutComponent implements OnInit {
         roles: [1, 3]
       },
       {
+        path: '/main/roles',
+        icon: 'manage_accounts',
+        label: 'Roles',
+        roles: [1, 3]
+      },
+      {
         path: '/main/repositories',
         icon: 'pi pi-briefcase',
         label: 'Repositorios',

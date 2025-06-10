@@ -76,6 +76,9 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
   @ViewChildren('graphContainer') graphContainers!: QueryList<ElementRef>;
   @ViewChild('bottomAnchor') bottomAnchor!: ElementRef;
 
+  private resizeObserver?: ResizeObserver;
+  private graphRendered = false;
+
   isSidebarCollapsed: boolean = false;
   userInput: string = '';
   isGenerating = false;
@@ -107,6 +110,7 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
   constructor(private chatService: ChatService) {}
 
   ngAfterViewInit(): void {
+    this.setupResizeObserver();
     this.graphContainers.changes.subscribe(() => {
       this.renderAllGraphs();
     });
@@ -208,7 +212,6 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
       this.scrollToBottom();
     }
   }
-
   private mapApiMessagesToChatMessages(apiMessages: ApiChatMessage[]): ChatMessage[] {
     return apiMessages.flatMap(apiMsg => {
       // Convertir el actor del API a tu tipo de rol
@@ -287,7 +290,6 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
       };
     }
   }
-
   newChat(): void {
     this.startTypewriter();
     const newId = this.chatHistory.length > 0
@@ -323,31 +325,63 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
   rateMessage(messageIndex: number, rating: number | null | undefined) {
     console.log(`Mensaje ${messageIndex} calificado con ${rating} estrellas`);
   }
-  renderAllGraphs() {
-    this.graphContainers.forEach((container, index) => {
-      // Encontrar el mensaje de gráfico correspondiente
-      const graphMessages = this.currentChat.messages.filter(m => m.type === 'graph');
-      const message = graphMessages[index];
+  private async renderAllGraphs(){
+    if (!this.graphContainers) return;
 
-      if (message && message.content) {
-        const graphData = {...message.content};
-        /*if (graphData?.transform) {
-          delete graphData.transform;
-        }*/
-        graphData.width = 250;
+    await Promise.all(
+      this.graphContainers.map(async (container, index) => {
+        await this.renderGraph(container.nativeElement, index);
+      })
+    );
+
+  }
+
+  private async renderGraph(container: HTMLElement, index: number): Promise<void> {
+    const graphMessages = this.currentChat.messages.filter(m => m.type === 'graph');
+    const message = graphMessages[index];
+
+    if (message && message.content) {
+      try {
+        // Limpiar el contenedor
+        container.innerHTML = '';
+
+        // Clonar los datos para no modificar el original
+        const graphData = JSON.parse(JSON.stringify(message.content));
+
+        // Configuración responsive
+        graphData.width = 'container';
         graphData.height = 200;
+        graphData.autosize = {
+          type: 'fit',
+          contains: 'padding'
+        };
 
-        // Limpiar el contenedor antes de renderizar
-        container.nativeElement.innerHTML = '';
+        // Se asegurar que el contenedor tenga un tamaño mínimo
+        container.style.minHeight = '200px';
+        container.style.width = '90%';
 
-        vegaEmbed(container.nativeElement, graphData, {
+        // Renderizar el gráfico
+        const result = await vegaEmbed(container, graphData, {
           actions: false,
-          renderer: 'svg'
-        }).catch(err => {
-          console.error('Error al renderizar gráfico:', err);
+          renderer: 'svg',
+          tooltip: true,
+          config: {
+            autosize: {
+              resize: true
+            }
+          }
         });
+
+        // Escuchar eventos de resize de Vega
+        result.view.addResizeListener(() => {
+          result.view.runAsync();
+        });
+
+      } catch (err) {
+        console.error('Error al renderizar gráfico:', err);
+        container.innerHTML = '<p class="error-message">No se pudo cargar el gráfico</p>';
       }
-    });
+    }
   }
   sendMessage() {
     if (!this.userInput.trim()) return;
@@ -384,7 +418,7 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
       chatHeader : {
         id_project: "2",
         id_chat: this.userId,
-        title_chat: !this.currentChat.title ? this.currentChat.title : 'Nuevo chat',
+        title_chat: this.currentChat.title ? this.currentChat.title : 'Nuevo chat',
         id_user: "erodriguez", //jvelasquez
         createdDate: new Date().toISOString(),
         lastUpdateDate: new Date().toISOString()
@@ -488,6 +522,7 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
   ngOnDestroy() {
     this.cancelGeneration.complete();
     clearInterval(this.generationInterval);
+    this.resizeObserver?.disconnect();
   }
   ngAfterViewChecked(): void {
     this.scrollToBottom();
@@ -524,6 +559,34 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
       this.bottomAnchor.nativeElement.scrollIntoView({ behavior: 'smooth' });
     } catch (err) {
       console.error('No se pudo hacer scroll:', err);
+    }
+  }
+
+  private setupResizeObserver(): void {
+    this.resizeObserver = new ResizeObserver(entries => {
+      if (!this.graphRendered) {
+        this.renderAllGraphs();
+        this.graphRendered = true;
+      } else {
+        // Solo actualiza los gráficos existentes cuando cambia el tamaño
+        entries.forEach(entry => {
+          const container = entry.target as HTMLElement;
+          const index = Array.from(container.parentElement?.children || []).indexOf(container);
+          this.updateGraphSize(index);
+        });
+      }
+    });
+
+    // Observar cambios en el contenedor principal del chat
+    const chatContainer = document.querySelector('.main-content');
+    if (chatContainer) {
+      this.resizeObserver.observe(chatContainer);
+    }
+  }
+  private updateGraphSize(index: number): void {
+    const container = this.graphContainers.get(index)?.nativeElement;
+    if (container && container.__view__) {
+      container.__view__.runAsync();
     }
   }
 

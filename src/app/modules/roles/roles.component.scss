@@ -1,0 +1,169 @@
+.user-container{
+  flex-grow: 1;
+  overflow-y: auto;
+  background-color: #F9F6F6;
+  transition: margin-right 0.3s ease;
+  height: calc(100vh - 60px);
+
+  .user-content{
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}
+.card {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  margin: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  /*font-size: 14px;*/
+}
+.btn-edit{
+  margin-right: 0.5rem;
+  border: 1px solid #E62020;
+  background-color: #E62020;
+  color: #FFFFFF;
+  &:hover {
+    background-color: #A30000 !important;
+    border-color: #A30000 !important;
+    color: #FFFFFF;
+  }
+}
+.btn-user-register{
+  background-color: #E62020;
+  border: 1px solid #E62020;
+  &:hover {
+    background-color: #A30000 !important;
+    border-color: #A30000 !important;
+  }
+}
+.btn-delete{
+  border: 1px solid #E62020;
+  background-color: #FAEFEF;
+  color: #E62020;
+
+  &:hover {
+    background-color: #FAEFEF !important;
+    border-color: #A30000 !important;
+    color: #A30000 !important;
+  }
+}
+.btn-eliminar{
+  margin-left: 5px;
+}
+::ng-deep .p-toolbar {
+  border: 0!important;
+  padding: 0!important;
+  margin-right: 1rem;
+  background-color: transparent!important;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.1rem;
+  padding: 2rem 1rem 0 1.5rem;
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-weight: 600;
+    font-size: 16px;
+    color: #000000;
+  }
+  input, p-dropdown {
+    width: 100%;
+  }
+}
+.m-0{
+  margin: 0;
+}
+.p-datatable {
+  &.p-datatable-scrollable {
+    .p-datatable-wrapper {
+      position: relative;
+      overflow: auto;
+    }
+
+    .p-datatable-thead > tr > th,
+    .p-datatable-tbody > tr > td {
+      white-space: nowrap;
+    }
+
+    .p-frozen-column {
+      position: sticky;
+      background: #ffffff;
+      z-index: 1;
+    }
+
+    .p-datatable-thead > tr > th.p-frozen-column {
+      z-index: 2;
+    }
+
+    .p-datatable-tbody > tr > td.p-frozen-column {
+      z-index: 1;
+    }
+  }
+}
+
+/* Estilo para la sombra de las columnas congeladas */
+.p-datatable {
+  .p-frozen-column {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    &:first-child {
+      left: 0;
+    }
+
+    &:last-child {
+      right: 0;
+    }
+  }
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.toolbar-spacing{
+  font-weight: 600;
+  font-size: 14px;
+}
+::ng-deep .p-checkbox-checked .p-checkbox-box{
+  background-color: #E62020 !important;
+  border-color: #E62020 !important;
+
+}
+::ng-deep .p-checkbox-input:hover {
+  background-color: #A30000 !important;
+}
+
+
+@media (max-width: 768px) {
+  .user-container{
+    position: relative;
+    padding: 0 0.1rem;
+    width: 100%;
+  }
+  .form-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  .toolbar-spacing{
+    padding:0;
+    display: flex;
+  }
+  .card {
+    margin: 1rem;
+    padding: 1rem;
+  }
+  .search {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 15px;
+  }
+  .p-datatable {
+    min-width: 1000px; /* Forzar scroll horizontal */
+  }
+}

@@ -1,0 +1,262 @@
+
+<div class="user-container">
+  <div class="user-content">
+    <div class="form-grid">
+      <div class="form-field">
+        <label>
+          <i class="pi pi-angle-left" style="font-size: 14px; color: #E62020;"></i><span style="margin-left: 8px; ">Roles de negocio</span>
+        </label>
+      </div>
+      <div class="form-field">
+        <p-toolbar class="toolbar-spacing">
+          <ng-template #start>
+          </ng-template>
+          <ng-template #end>
+
+          </ng-template>
+        </p-toolbar>
+      </div>
+      <div class="form-field">
+        <p-toolbar>
+          <ng-template #start>
+
+          </ng-template>
+          <ng-template #end>
+          </ng-template>
+        </p-toolbar>
+      </div>
+    </div>
+    <div class="card">
+      <p-toast position="bottom-right"/>
+      <button pButton label="Registrar" icon="pi pi-plus" class="btn-user-register" size="small"></button>
+      <p-button class="btn-eliminar" size="small" severity="danger" label="Eiminar" icon="pi pi-trash" outlined (onClick)="deleteSelectedProducts()" [disabled]="!selectedRoles || !selectedRoles.length" />
+      <p-table
+        #dt
+        [value]="roles"
+        [paginator]="true"
+        [rows]="5"
+        [rowsPerPageOptions]="[5, 10, 20, 50]"
+        [columns]="cols"
+        [globalFilterFields]="['codSegmento', 'codSociedad', 'codJerarquiaPais', 'codSubnegocio', 'codPlataforma', 'codOficinaVenta']"
+        currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros"
+        [showCurrentPageReport]="true"
+        dataKey="id"
+        editMode="row"
+        styleClass="p-datatable-gridlines"
+        [scrollable]="true"
+        scrollHeight="flex"
+        [resizableColumns]="true"
+        [reorderableColumns]="true"
+        [(selection)]="selectedRoles"
+      >
+        <ng-template  #caption >
+          <div class="search">
+            <h4 class="m-0">Tabla de Roles </h4>
+            <p-iconfield>
+              <p-inputicon styleClass="pi pi-search" />
+              <input pInputText type="text"
+                     (input)="onGlobalFilter($event)"
+                     placeholder="Buscar..." />
+            </p-iconfield>
+          </div>
+        </ng-template>
+        <ng-template #header>
+          <tr>
+            <th pFrozenColumn style="left: 0; width: 5%">
+              <p-tableHeaderCheckbox />
+            </th>
+            <th style="width:10%" >Cod. Segmento</th>
+            <th style="width:10%">Cod. Sociedad</th>
+            <th style="width:10%">Jerarquia Pais</th>
+            <th style="width:10%">Cod. Subnegocio</th>
+            <th style="width:10%">Cod. Plataforma</th>
+            <th style="width:10%">Oficina Venta</th>
+            <th style="width:10%">Rol</th>
+            <th style="width:10%">Area</th>
+            <th style="width:10%">Negocio</th>
+            <th pFrozenColumn style="left: 0!important; right: 0; width: 5%">Acciones</th>
+          </tr>
+        </ng-template>
+        <ng-template #body let-role let-editing="editing" let-ri="rowIndex">
+
+          <tr [pEditableRow]="role">
+            <td pFrozenColumn  style="left: 0; width: 5%">
+              <p-tableCheckbox [value]="role" />
+            </td>
+            <td>
+              <p-cellEditor>
+                <ng-template #input>
+                  <input
+                    pInputText type="text"
+                    [(ngModel)]="role.codSegmento"
+                    pSize="small" placeholder="Small"/>
+                </ng-template>
+                <ng-template #output>
+                  {{role.codSegmento}}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td>
+              <p-cellEditor>
+                <ng-template #input>
+                  <input
+                    pInputText type="text"
+                    [(ngModel)]="role.codSociedad"
+                    pSize="small" placeholder="Small"
+                    required />
+                </ng-template>
+                <ng-template #output>
+                  {{role.codSociedad}}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td>
+              <p-cellEditor>
+                <ng-template #input>
+                  <input
+                    pInputText type="text"
+                    [(ngModel)]="role.codJerarquiaPais"
+                    pSize="small" placeholder="Small"
+                    required />
+                </ng-template>
+                <ng-template #output>
+                  {{role.codJerarquiaPais}}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td>
+              <p-cellEditor>
+                <ng-template #input>
+                  <input
+                    pInputText type="text"
+                    [(ngModel)]="role.codSubnegocio"
+                    pSize="small" placeholder="Small" />
+                </ng-template>
+                <ng-template #output>
+                  {{role.codSubnegocio}}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td>
+              <p-cellEditor>
+                <ng-template #input>
+                  <input
+                    pInputText type="text"
+                    [(ngModel)]="role.codPlataforma"
+                    pSize="small" placeholder="Plataforma"/>
+                </ng-template>
+                <ng-template #output>
+                  {{role.codPlataforma}}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td>
+              <p-cellEditor>
+                <ng-template #input>
+                  <input
+                    pInputText type="text"
+                    [(ngModel)]="role.codOficinaVenta"
+                    pSize="small"/>
+                </ng-template>
+                <ng-template #output>
+                  {{role.codOficinaVenta}}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td>
+              <p-cellEditor>
+                <ng-template #input>
+                  <input
+                    pInputText type="text"
+                    [(ngModel)]="role.desRol"
+                    pSize="small"/>
+                </ng-template>
+                <ng-template #output>
+                  {{role.desRol}}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td>
+              <p-cellEditor>
+                <ng-template #input>
+                  <input
+                    pInputText type="text"
+                    [(ngModel)]="role.desArea"
+                    pSize="small"/>
+                </ng-template>
+                <ng-template #output>
+                  {{role.desArea}}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td>
+              <p-cellEditor>
+                <ng-template #input>
+                  <input
+                    pInputText type="text"
+                    [(ngModel)]="role.desNegocio"
+                    pSize="small"/>
+                </ng-template>
+                <ng-template #output>
+                  {{role.desNegocio}}
+                </ng-template>
+              </p-cellEditor>
+            </td>
+            <td pFrozenColumn style="left: 0!important; right: 0; width: 5%">
+              <!--<div class="flex items-center justify-center gap-2">-->
+                <button
+                  *ngIf="!editing"
+                  pButton
+                  pRipple
+                  type="button"
+                  pInitEditableRow
+                  icon="pi pi-pencil"
+                  (click)="onRowEditInit(role)"
+                  text
+                  rounded
+                  class="btn-edit"
+                  size="small"
+                  [raised]="true"
+                ></button>
+                <button
+                  *ngIf="editing"
+                  pButton
+                  pRipple
+                  type="button"
+                  pSaveEditableRow
+                  icon="pi pi-check"
+                  (click)="onRowEditSave(role)"
+                  text
+                  rounded
+                  severity="success"
+                  size="small"
+                ></button>
+                <button
+                  *ngIf="editing"
+                  pButton
+                  pRipple
+                  type="button"
+                  pCancelEditableRow
+                  icon="pi pi-times"
+                  (click)="onRowEditCancel(role, ri)"
+                  text
+                  rounded
+                  severity="secondary"
+                  size="small"
+                ></button>
+
+            <!--  </div>-->
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+
+    </div>
+  </div>
+  <p-confirmDialog [style]="{ width: '450px' }" />
+</div>
+
+
+
+
