@@ -11,7 +11,7 @@ export class RoleService {
 
   constructor(private http: HttpClient) { }
 
-  getBussinessRoles(projectId: string,page:string, per_page:string): Observable<any>{
+  getBussinessRoles(projectId: any,page:string, per_page:string): Observable<any>{
     const params = new HttpParams()
       .set('page', page)
       .set('per_page', per_page);

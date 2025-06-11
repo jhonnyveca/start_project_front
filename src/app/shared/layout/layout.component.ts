@@ -26,7 +26,6 @@ export default class LayoutComponent implements OnInit {
 
   userRole: number = 0; // 0 = no logeado, 1 = adminfinsight, 2 = consultorfinsight, 3 = adminalivoice
   availableModules: any[] = [];
-  userEmail: string  | null = '';
   idUser: string  | null = '';
   userName: string | null = '';
   idProject: string | null = '';
@@ -48,21 +47,12 @@ export default class LayoutComponent implements OnInit {
     this.checkScreenSize();
     this.checkSavedTheme();
 
-    const role = localStorage.getItem('userRole');
-    this.userRole = role ? parseInt(role) : 0;
-
-    const userEmail = localStorage.getItem('userEmail');
-    this.userEmail = userEmail ? userEmail : null;
-
     const idUser = localStorage.getItem('idUser');
     this.idUser = idUser ? idUser : null;
-    console.log(idUser);
 
     const idProject = localStorage.getItem('idProject');
     this.idProject = idProject ? idProject : null;
-    console.log(idProject);
 
-    this.configureAvailableModules();
     this.getAccessRolUser(idProject, idUser);
   }
 
@@ -70,67 +60,14 @@ export default class LayoutComponent implements OnInit {
     this.authService.getAccessUser(idProject, idUser)
       .subscribe({
         next: response => {
-          console.log(response.functionalityAccess);
           this.userName = response.nameUser;
+          this.availableModules = response.functionalityAccess;
 
         },
         error: error => {
 
         }
       })
-  }
-
-  configureAvailableModules() {
-    const allModules = [
-      {
-        path: '/main/chat-box',
-        icon: 'robot_2',
-        label: 'Asistente',
-        roles: [1, 2]
-      },
-      {
-        path: '/main/dashboard',
-        icon: 'pi-objects-column',
-        label: 'Dashboard',
-        roles: [1, 2]
-      },
-      {
-        path: '/main/users',
-        icon: 'pi pi-users',
-        label: 'Usuarios',
-        roles: [1, 3]
-      },
-      {
-        path: '/main/roles',
-        icon: 'manage_accounts',
-        label: 'Roles',
-        roles: [1, 3]
-      },
-      {
-        path: '/main/repositories',
-        icon: 'pi pi-briefcase',
-        label: 'Repositorios',
-        roles: [3]
-      },
-      {
-        path: '/main/template',
-        icon: 'layers',
-        label: 'Plantillas',
-        roles: [1]
-      },
-      {
-        path: '/main/indicators',
-        icon: 'rocket_launch',
-        label: 'Indicadores',
-        roles: [1,3]
-      }
-    ];
-
-    // Filtrar módulos según el rol del usuario
-    this.availableModules = allModules.filter(module =>
-      module.roles.includes(this.userRole)
-    );
-
   }
 
   @HostListener('window:resize')

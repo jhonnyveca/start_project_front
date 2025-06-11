@@ -16,6 +16,7 @@ import { Rating } from 'primeng/rating';
 import { ChatService } from '../../core/service/chat.service';
 import vegaEmbed from 'vega-embed';
 import { trigger, transition, style, animate, state } from '@angular/animations';
+import {AuthService} from '../../core/authentication/service/auth.service';
 
 
 type ChatRole = 'user' | 'bot' | 'graph';
@@ -106,10 +107,15 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
   currentChat: ChatSession = this.chatHistory[0];
 
   chatId : number = 0;
-  userId: number = 0;
-  sessionId: number = 0;
+  idUser: string  | null = '';
+  idProject: string | null = '';
+  idSession: string | null = '';
+  userName: string | null = '';
 
-  constructor(private chatService: ChatService) {}
+  constructor(
+    private authService: AuthService,
+    private chatService: ChatService
+  ) {}
 
   ngAfterViewInit(): void {
     this.setupResizeObserver();
@@ -122,13 +128,33 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
     this.updateSidebarForScreenSize();
     this.startTypewriter();
     /*this.initializeNewChat();*/
+    const idUser = localStorage.getItem('idUser');
+    this.idUser = idUser ? idUser : null;
+
+    const idProject = localStorage.getItem('idProject');
+    this.idProject = idProject ? idProject : null;
+
+    const idSession = localStorage.getItem('idSession');
+    this.idSession = idSession ? idSession : null;
 
     //prueba historial
-    this.loadChatHistory('erodriguez', '2');
+    this.loadChatHistory(idUser, idProject);
+    this.getAccessRolUser(idProject,idUser);
     this.initializeEmptyChatState();
 
   }
-  loadChatHistory(idUser: string, idProject: string): void {
+  getAccessRolUser(idProject:any, idUser:any){
+    this.authService.getAccessUser(idProject, idUser)
+      .subscribe({
+        next: response => {
+          this.userName = response.nameUser;
+        },
+        error: error => {
+          console.log(error)
+        }
+      })
+  }
+  loadChatHistory(idUser: any, idProject: any): void {
     this.chatService.getChatHistory(idUser, idProject)
       .subscribe({
         next: (response) => {
@@ -144,14 +170,6 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
               createdDate: chat.createdDate,
               lastUpdateDate: chat.lastUpdateDate
             }));
-
-            // Cargar el primer chat del historial
-         /*   if (this.chatHistory.length > 0) {
-              this.loadChat(this.chatHistory[0]);
-            }
-          }else {
-            this.isEmptyHistory = true;
-            this.initializeNewChat();*/
           }
         },
         error: (error) => {
@@ -195,7 +213,9 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
 
     // Solo cargar mensajes si no los tiene
     if (chat.messages.length === 0) {
-      this.chatService.getChatMessages('erodriguez', '2', chat.id.toString())
+      const userId:number = parseInt(this.idUser!);
+      const projectId = parseInt(this.idProject!);
+      this.chatService.getChatMessages(userId, projectId, chat.id)
         .subscribe({
           next: (response: any) => {
             chat.isLoading = false;
@@ -412,22 +432,19 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
     this.isGenerating = true;
     this.scrollToBottom();
 
-    console.log(this.currentChat.title);
-
-
     this.chatService.sendMenssage({
       chatHeader : {
         status: 1,
         createDate: new Date().toISOString(), // tiene que ser la fecha de creacion de chat
         lastUpdateDate: new Date().toISOString(),
-        lastUpdateUser: "NAME DE USUARIO",
-        createUser: "NAME DE USUARIO",
-        id_project: 2,
+        lastUpdateUser: this.userName,
+        createUser: this.userName,
+        id_project: this.idProject,
         id_chat: this.chatId,
         title_chat: this.currentChat.title ? this.currentChat.title : 'Nuevo chat',
-        id_user: this.userId
+        id_user: this.idUser
       },
-      id_session: 0,
+      id_session: this.idSession,
       id_channel: 1,
       message: userMessage,
       channel_metadata:{
@@ -437,6 +454,7 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
       id_message: 0,
     }).subscribe({
       next: (res: any) => {
+        console.log(res)
         if (!res) {
           throw new Error('La respuesta del servidor está vacía');
         }

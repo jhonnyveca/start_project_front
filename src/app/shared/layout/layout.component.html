@@ -56,15 +56,15 @@
           <span *ngIf="!sidebarCollapsed">Dashboard</span>
         </div>
       </li>
-      <li *ngIf="userRole != 2" class="group-title" >Administración</li>
+      <!--<li *ngIf="userRole != 2" class="group-title" >Administración</li>-->
       <!-- Módulos dinámicos según rol -->
       <ng-container *ngFor="let module of availableModules">
         <!-- Excluimos Asistente y Dashboard que ya están renderizados arriba -->
-        <li *ngIf="module.path !== '/main/chat-box' && module.path !== '/main/dashboard'"
+        <li *ngIf="module.path == ''" class="group-title" >{{module.label}}</li>
+        <li *ngIf="module.path != ''"
             [routerLink]="module.path"
             routerLinkActive="active"
-            class="clickable"
-            (click)="onMenuOptionClick()">
+            class="clickable"  (click)="onMenuOptionClick()">
           <div class="module-title">
             <i *ngIf="module.icon.startsWith('pi')" [class]="module.icon"></i>
             <i *ngIf="!module.icon.startsWith('pi')" class="material-symbols-outlined">{{module.icon}}</i>

@@ -40,7 +40,7 @@
         [globalFilterFields]="['codSegmento', 'codSociedad', 'codJerarquiaPais', 'codSubnegocio', 'codPlataforma', 'codOficinaVenta']"
         currentPageReportTemplate="Mostrando del {first} al {last} de {totalRecords} registros"
         [showCurrentPageReport]="true"
-        dataKey="id"
+        dataKey="idBusinessDomainRol"
         editMode="row"
         styleClass="p-datatable-gridlines"
         [scrollable]="true"
@@ -89,7 +89,7 @@
                   <input
                     pInputText type="text"
                     [(ngModel)]="role.codSegmento"
-                    pSize="small" placeholder="Small"/>
+                    pSize="small" placeholder="Codigo Segmento"/>
                 </ng-template>
                 <ng-template #output>
                   {{role.codSegmento}}
@@ -102,7 +102,7 @@
                   <input
                     pInputText type="text"
                     [(ngModel)]="role.codSociedad"
-                    pSize="small" placeholder="Small"
+                    pSize="small" placeholder="Codigo Sociedad"
                     required />
                 </ng-template>
                 <ng-template #output>
@@ -116,7 +116,7 @@
                   <input
                     pInputText type="text"
                     [(ngModel)]="role.codJerarquiaPais"
-                    pSize="small" placeholder="Small"
+                    pSize="small" placeholder="Codigo Jerarquia"
                     required />
                 </ng-template>
                 <ng-template #output>
@@ -130,7 +130,7 @@
                   <input
                     pInputText type="text"
                     [(ngModel)]="role.codSubnegocio"
-                    pSize="small" placeholder="Small" />
+                    pSize="small" placeholder="Codigo Subnegocio" />
                 </ng-template>
                 <ng-template #output>
                   {{role.codSubnegocio}}
@@ -168,11 +168,11 @@
                 <ng-template #input>
                   <input
                     pInputText type="text"
-                    [(ngModel)]="role.desRol"
+                    [(ngModel)]="role.idBusinessDomainRol"
                     pSize="small"/>
                 </ng-template>
                 <ng-template #output>
-                  {{role.desRol}}
+                  {{role.businessDomainRol}}
                 </ng-template>
               </p-cellEditor>
             </td>
@@ -181,11 +181,11 @@
                 <ng-template #input>
                   <input
                     pInputText type="text"
-                    [(ngModel)]="role.desArea"
+                    [(ngModel)]="role.idBusinessDomainArea"
                     pSize="small"/>
                 </ng-template>
                 <ng-template #output>
-                  {{role.desArea}}
+                  {{role.businessDomainArea}}
                 </ng-template>
               </p-cellEditor>
             </td>
@@ -194,11 +194,11 @@
                 <ng-template #input>
                   <input
                     pInputText type="text"
-                    [(ngModel)]="role.desNegocio"
+                    [(ngModel)]="role.idBusinessDomain"
                     pSize="small"/>
                 </ng-template>
                 <ng-template #output>
-                  {{role.desNegocio}}
+                  {{role.businessDomain}}
                 </ng-template>
               </p-cellEditor>
             </td>

@@ -28,7 +28,7 @@ export class ChatService {
     return this.http.get<any>(`${this.apiURL}/Assistant/getUserElements`, {params: params}).pipe()
   }
 
-  getChatMessages(userId:string, projectId:string, chatId:string): Observable<any> {
+  getChatMessages(userId:number, projectId:number, chatId:number): Observable<any> {
     const params = new HttpParams()
       .set('id_user', userId)
       .set('id_project', projectId)

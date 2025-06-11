@@ -12,7 +12,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  login(idProject:string, data: any): Observable<any> {
+  login(idProject:number, data: any): Observable<any> {
     console.log("Request: "+data);
     return this.http.post<any>(`${this.apiURL}/${idProject}/Users/authUser`, data).pipe(
       tap(response => {

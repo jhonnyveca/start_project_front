@@ -13,6 +13,7 @@ import {Role} from '../../core/models/Role';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
 import {ConfirmDialog} from 'primeng/confirmdialog';
+import {AuthService} from '../../core/authentication/service/auth.service';
 
 
 interface Column {
@@ -42,7 +43,7 @@ interface BusinessRole {
   "businessDomainArea": string,
   "idBusinessDomain": number,
   "businessDomain": string,
-  rules: Rule[]
+  rules: Rule
 }
 
 @Component({
@@ -78,9 +79,9 @@ export default class RolesComponent implements OnInit{
 
   statuses!: any[];
 
-  businessRolesItems: any[] = [];
-  allItemsWithRules: any[] = [];
-  allRules: any[] = [];
+  idUser: string  | null = '';
+  idProject: string | null = '';
+  idSession: string | null = ''
 
   @ViewChild('dt') dt!: Table | undefined;
 
@@ -102,13 +103,22 @@ export default class RolesComponent implements OnInit{
 
 
   ngOnInit() {
-    this.loadDemoData();
+    /*this.loadDemoData();*/
+    const idUser = localStorage.getItem('idUser');
+    this.idUser = idUser ? idUser : null;
+
+    const idProject = localStorage.getItem('idProject');
+    this.idProject = idProject ? idProject : null;
+
+    const idSession = localStorage.getItem('idSession');
+    this.idSession = idSession ? idSession : null;
+
     this.loadBussinessRolesData();
   }
 
   loadDemoData() {
     this.rolesService.getRoles().then((data) => {
-      this.roles = data;
+      /*this.roles = data;*/
       this.cd.markForCheck();
     });
 
@@ -120,31 +130,27 @@ export default class RolesComponent implements OnInit{
 
   }
   loadBussinessRolesData(){
-    this.rolesService.getBussinessRoles("2","1","100").subscribe({
+    this.rolesService.getBussinessRoles(this.idProject,"1","100").subscribe({
       next: data => {
-        const businessRolesItems: BusinessRole[] = data.items;
-
         const allItemsWithRules = data.items.map((item: BusinessRole) => ({
-          status: item.status,
-          createDate: item.createDate,
-          lastUpdateDate: item.lastUpdateDate,
-          lastUpdateUser: item.lastUpdateUser,
-          createUser: item.createUser,
-          idProject: item.idProject,
           idBusinessDomainRol: item.idBusinessDomainRol,
           businessDomainRol: item.businessDomainRol,
           idBusinessDomainArea: item.idBusinessDomainArea,
           businessDomainArea: item.businessDomainArea,
           idBusinessDomain: item.idBusinessDomain,
           businessDomain: item.businessDomain,
-          rules: item.rules,
+          codJerarquiaPais: item.rules?.cod_jerarquia_pais,
+          codOficinaVenta:item.rules?.cod_oficina_venta,
+          codPlataforma:item.rules?.cod_plataforma,
+          codSegmento:item.rules?.cod_segmento,
+          codSociedad:item.rules?.cod_sociedad,
+          codSubnegocio:item.rules?.cod_subnegocio,
         }));
 
-        const allRules: Rule[] = data.items.flatMap((item: BusinessRole) => item.rules);
-        console.log(businessRolesItems)
         console.log(allItemsWithRules);
-        console.log(allRules);
-
+        this.roles = allItemsWithRules;
+        console.log(this.roles)
+        this.cd.markForCheck();
       },
       error: err => {
         console.log(err);

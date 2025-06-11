@@ -28,12 +28,12 @@ export default class LoginComponent {
 
   loginForm: FormGroup;
   loginError: string = '';
-  idProject: string = '2'
+
 
   private readonly allowedUsers = {
-    'adminfinsight@alicorp.com': { role: 1 },
-    'consultorfinsight@alicorp.com': {  role: 2 },
-    'adminalivoice@alicorp.com': { role: 3 }
+    'adminfinsight@alicorp.com': { project: 2 },
+    'consultorfinsight@alicorp.com': {  project: 2 },
+    'adminalivoice@alicorp.com': { project: 1 }
   };
 
   constructor(private fb: FormBuilder,
@@ -51,12 +51,12 @@ export default class LoginComponent {
       return;
     }
     const email = this.loginForm.get('email')?.value;
-    const user = this.allowedUsers[email as keyof typeof this.allowedUsers];
+    const projectManager = this.allowedUsers[email as keyof typeof this.allowedUsers];
+    console.log(projectManager.project)
 
-  
-      this.authService.login(this.idProject, {
+      this.authService.login(projectManager.project, {
         idSession: 0,
-        idProject: 2,
+        idProject: projectManager.project,
         codSession: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30",
         idUser: 0,
         userLogin: email,
