@@ -105,7 +105,9 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
   chatHistory: ChatSession[] = [];
   currentChat: ChatSession = this.chatHistory[0];
 
-  userId : string = "";
+  chatId : number = 0;
+  userId: number = 0;
+  sessionId: number = 0;
 
   constructor(private chatService: ChatService) {}
 
@@ -189,7 +191,7 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
     // Mostrar indicador de carga
     chat.isLoading = true;
     this.currentChat = chat;
-    this.userId = chat.id.toString();
+    this.chatId = chat.id;
 
     // Solo cargar mensajes si no los tiene
     if (chat.messages.length === 0) {
@@ -274,7 +276,7 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
       this.chatHistory.unshift(this.currentChat);
     }
 
-    this.userId = this.currentChat.id.toString();
+    this.chatId = this.currentChat.id;
     this.isEmptyHistory = false;
   }
   initializeEmptyChatState() {
@@ -306,7 +308,7 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
 
     this.chatHistory.unshift(newSession);
     this.currentChat = newSession;
-    this.userId = newId.toString();
+    this.chatId = newId;
     if (this.isEmptyHistory) {
       this.isEmptyHistory = false;
     }
@@ -335,7 +337,6 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
     );
 
   }
-
   private async renderGraph(container: HTMLElement, index: number): Promise<void> {
     const graphMessages = this.currentChat.messages.filter(m => m.type === 'graph');
     const message = graphMessages[index];
@@ -386,7 +387,7 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
   sendMessage() {
     if (!this.userInput.trim()) return;
 
-    this.userId = this.currentChat.id.toString();
+    this.chatId = this.currentChat.id;
 
     if (this.currentChat.isNew && this.currentChat.messages.length === 0) {
       this.updateChatTitle(this.userInput.trim());
@@ -416,17 +417,24 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
 
     this.chatService.sendMenssage({
       chatHeader : {
-        id_project: "2",
-        id_chat: this.userId,
+        status: 1,
+        createDate: new Date().toISOString(), // tiene que ser la fecha de creacion de chat
+        lastUpdateDate: new Date().toISOString(),
+        lastUpdateUser: "NAME DE USUARIO",
+        createUser: "NAME DE USUARIO",
+        id_project: 2,
+        id_chat: this.chatId,
         title_chat: this.currentChat.title ? this.currentChat.title : 'Nuevo chat',
-        id_user: "erodriguez", //jvelasquez
-        createdDate: new Date().toISOString(),
-        lastUpdateDate: new Date().toISOString()
+        id_user: this.userId
       },
-      id_session: "1",
-      id_channel: "1",
+      id_session: 0,
+      id_channel: 1,
       message: userMessage,
-      index_message: 1
+      channel_metadata:{
+        device:"Windows"
+      },
+      index_message: 1,// se quiere agregar el lenght del chat
+      id_message: 0,
     }).subscribe({
       next: (res: any) => {
         if (!res) {
@@ -561,7 +569,6 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
       console.error('No se pudo hacer scroll:', err);
     }
   }
-
   private setupResizeObserver(): void {
     this.resizeObserver = new ResizeObserver(entries => {
       if (!this.graphRendered) {

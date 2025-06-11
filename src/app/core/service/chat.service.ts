@@ -15,7 +15,6 @@ export class ChatService {
     return this.http.post<any>(`${this.apiURL}/Assistant/processQuestion`, data).pipe(
       catchError(error => {
         console.error('Error en la petición:', error);
-        // Puedes devolver un objeto con estructura consistente incluso en errores
         return throwError(() => new Error('Error en la comunicación con el servidor'));
       })
     );

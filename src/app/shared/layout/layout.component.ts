@@ -4,6 +4,7 @@ import {Menu} from 'primeng/menu';
 import {DOCUMENT, NgClass, NgForOf, NgIf} from '@angular/common';
 
 import {Router, RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
+import {AuthService} from '../../core/authentication/service/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -26,6 +27,9 @@ export default class LayoutComponent implements OnInit {
   userRole: number = 0; // 0 = no logeado, 1 = adminfinsight, 2 = consultorfinsight, 3 = adminalivoice
   availableModules: any[] = [];
   userEmail: string  | null = '';
+  idUser: string  | null = '';
+  userName: string | null = '';
+  idProject: string | null = '';
 
   sidebarCollapsed = false;
   sidebarVisible = true;
@@ -34,6 +38,7 @@ export default class LayoutComponent implements OnInit {
 
 
   constructor(
+    private authService: AuthService,
     private router: Router,
     private renderer: Renderer2,
     @Inject(DOCUMENT) private document: Document
@@ -49,7 +54,30 @@ export default class LayoutComponent implements OnInit {
     const userEmail = localStorage.getItem('userEmail');
     this.userEmail = userEmail ? userEmail : null;
 
+    const idUser = localStorage.getItem('idUser');
+    this.idUser = idUser ? idUser : null;
+    console.log(idUser);
+
+    const idProject = localStorage.getItem('idProject');
+    this.idProject = idProject ? idProject : null;
+    console.log(idProject);
+
     this.configureAvailableModules();
+    this.getAccessRolUser(idProject, idUser);
+  }
+
+  getAccessRolUser(idProject:any, idUser:any){
+    this.authService.getAccessUser(idProject, idUser)
+      .subscribe({
+        next: response => {
+          console.log(response.functionalityAccess);
+          this.userName = response.nameUser;
+
+        },
+        error: error => {
+
+        }
+      })
   }
 
   configureAvailableModules() {
@@ -101,7 +129,6 @@ export default class LayoutComponent implements OnInit {
     // Filtrar módulos según el rol del usuario
     this.availableModules = allModules.filter(module =>
       module.roles.includes(this.userRole)
-
     );
 
   }

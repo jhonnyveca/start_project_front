@@ -20,7 +20,30 @@ interface Column {
   header: string;
   customExportHeader?: string;
 }
+interface Rule {
+  cod_jerarquia_pais:string;
+  cod_oficina_venta:string;
+  cod_plataforma:string;
+  cod_segmento:string;
+  cod_sociedad:string;
+  cod_subnegocio:string;
+}
 
+interface BusinessRole {
+  "status": number,
+  "createDate": string,
+  "lastUpdateDate": string,
+  "lastUpdateUser": string,
+  "createUser": string,
+  "idProject": number,
+  "idBusinessDomainRol": number,
+  "businessDomainRol": string,
+  "idBusinessDomainArea": number,
+  "businessDomainArea": string,
+  "idBusinessDomain": number,
+  "businessDomain": string,
+  rules: Rule[]
+}
 
 @Component({
   selector: 'app-roles',
@@ -55,6 +78,10 @@ export default class RolesComponent implements OnInit{
 
   statuses!: any[];
 
+  businessRolesItems: any[] = [];
+  allItemsWithRules: any[] = [];
+  allRules: any[] = [];
+
   @ViewChild('dt') dt!: Table | undefined;
 
 
@@ -76,6 +103,7 @@ export default class RolesComponent implements OnInit{
 
   ngOnInit() {
     this.loadDemoData();
+    this.loadBussinessRolesData();
   }
 
   loadDemoData() {
@@ -90,6 +118,38 @@ export default class RolesComponent implements OnInit{
       { label: 'NG', value: 'NG' }
     ];
 
+  }
+  loadBussinessRolesData(){
+    this.rolesService.getBussinessRoles("2","1","100").subscribe({
+      next: data => {
+        const businessRolesItems: BusinessRole[] = data.items;
+
+        const allItemsWithRules = data.items.map((item: BusinessRole) => ({
+          status: item.status,
+          createDate: item.createDate,
+          lastUpdateDate: item.lastUpdateDate,
+          lastUpdateUser: item.lastUpdateUser,
+          createUser: item.createUser,
+          idProject: item.idProject,
+          idBusinessDomainRol: item.idBusinessDomainRol,
+          businessDomainRol: item.businessDomainRol,
+          idBusinessDomainArea: item.idBusinessDomainArea,
+          businessDomainArea: item.businessDomainArea,
+          idBusinessDomain: item.idBusinessDomain,
+          businessDomain: item.businessDomain,
+          rules: item.rules,
+        }));
+
+        const allRules: Rule[] = data.items.flatMap((item: BusinessRole) => item.rules);
+        console.log(businessRolesItems)
+        console.log(allItemsWithRules);
+        console.log(allRules);
+
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
   }
 
   editProduct(role: Role) {
