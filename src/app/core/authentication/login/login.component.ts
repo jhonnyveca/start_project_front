@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {InputText} from 'primeng/inputtext';
 
@@ -8,6 +8,7 @@ import {FloatLabel} from 'primeng/floatlabel';
 import {IconField} from 'primeng/iconfield';
 import {InputIcon} from 'primeng/inputicon';
 import {AuthService} from '../service/auth.service';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -24,16 +25,20 @@ import {AuthService} from '../service/auth.service';
   standalone: true,
   styleUrl: './login.component.scss'
 })
-export default class LoginComponent {
+export default class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   loginError: string = '';
+  idProjectParam: number[] = environment.idProject
+  idChannelParam: number[] = environment.idChannel
+
+
 
 
   private readonly allowedUsers = {
-    'adminfinsight@alicorp.com': { project: 2 },
-    'consultorfinsight@alicorp.com': {  project: 2 },
-    'adminalivoice@alicorp.com': { project: 1 }
+    'adminfinsight@alicorp.com': { project: this.idProjectParam[1], idChannel:this.idChannelParam[0] },
+    'consultorfinsight@alicorp.com': {  project: this.idProjectParam[1] , idChannel:this.idChannelParam[0]  },
+    'adminalivoice@alicorp.com': { project: this.idProjectParam[0] , idChannel:this.idChannelParam[0]  }
   };
 
   constructor(private fb: FormBuilder,
@@ -46,13 +51,18 @@ export default class LoginComponent {
     });
   }
 
+  ngOnInit(): void {
+    console.log(this.idProjectParam[0])
+  }
+
   onSubmit() {
     if (this.loginForm.invalid) {
       return;
     }
     const email = this.loginForm.get('email')?.value;
     const projectManager = this.allowedUsers[email as keyof typeof this.allowedUsers];
-    console.log(projectManager.project)
+
+
 
       this.authService.login(projectManager.project, {
         idSession: 0,
@@ -93,4 +103,6 @@ export default class LoginComponent {
      // this.loginError = 'Credenciales incorrectas o usuario no autorizado';
 
   }
+
+
 }

@@ -213,13 +213,16 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
 
     // Solo cargar mensajes si no los tiene
     if (chat.messages.length === 0) {
+
       const userId:number = parseInt(this.idUser!);
       const projectId = parseInt(this.idProject!);
       this.chatService.getChatMessages(userId, projectId, chat.id)
         .subscribe({
           next: (response: any) => {
+
             chat.isLoading = false;
             if (response?.sequenceMessage?.length > 0) {
+              console.log(response.sequenceMessage)
               chat.messages = this.mapApiMessagesToChatMessages(response.sequenceMessage);
             }
             this.scrollToBottom();
@@ -236,7 +239,7 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
   }
   private mapApiMessagesToChatMessages(apiMessages: ApiChatMessage[]): ChatMessage[] {
     return apiMessages.flatMap(apiMsg => {
-      // Convertir el actor del API a tu tipo de rol
+
       const role: ChatRole = this.determineRole(apiMsg.actor);
 
       // Mensaje base
@@ -251,6 +254,7 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
 
       // Verificar si tiene elementos gráficos
       const graphElement = apiMsg.elements?.find((el: any) => el.type === 'GRAPH');
+      console.log(graphElement)
 
       if (graphElement) {
         return [
@@ -358,8 +362,10 @@ export default class ChatBoxComponent implements AfterViewInit, OnInit, OnDestro
 
   }
   private async renderGraph(container: HTMLElement, index: number): Promise<void> {
+    console.log("PRUEBA : currentChat"+this.currentChat.messages.map(m=> console.log(m.hasGraph)))
     const graphMessages = this.currentChat.messages.filter(m => m.type === 'graph');
     const message = graphMessages[index];
+
 
     if (message && message.content) {
       try {
